@@ -13,7 +13,7 @@
 |------|------------|
 | Frontend | React + Vite + TypeScript + Tailwind CSS |
 | Offline DB | Dexie.js (IndexedDB) |
-| Backend | Node.js + Express + SQLite (better-sqlite3) |
+| Backend | Node.js + Express + SQLite (better-sqlite3), отдаёт и API, и статику фронта |
 | Auth | JWT Bearer |
 | PWA | vite-plugin-pwa |
 
@@ -114,6 +114,7 @@ src/
 *Цель: API с авторизацией, данные хранятся на сервере*
 
 - [ ] Express + better-sqlite3, схема БД (те же таблицы)
+- [ ] `express.static('dist')` + SPA fallback (`*` → `index.html`)
 - [ ] `POST /auth/login` → JWT
 - [ ] JWT middleware для защиты роутов
 - [ ] CRUD для `odometer_entries`
