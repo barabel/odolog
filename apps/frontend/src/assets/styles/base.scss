@@ -1,0 +1,37 @@
+html {
+  font-size: 16px;
+
+  --font-onest: "Onest", system-ui, sans-serif;
+
+  --color-black-100: #000000;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+  min-height: 100vh;
+  line-height: 100%;
+  font-family: var(--font-onest), serif;
+  font-weight: 400;
+  color: var(--color-blue-700);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+main {
+  min-height: 100vh;
+}
+
+button,
+form,
+input,
+textarea {
+  font-family: var(--font-onest), serif;
+  font-weight: 400;
+
+  outline: none;
+}

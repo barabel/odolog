@@ -1,0 +1,18 @@
+{
+  "name": "odolog",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:front": "npm -w @odolog/frontend run dev",
+    "build": "npm -w @odolog/frontend run build",
+    "lint": "npm -w @odolog/frontend run lint",
+    "check": "npm run lint && npm run build",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
