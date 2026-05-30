@@ -1,0 +1,1 @@
+export { TVehicles } from './types';
