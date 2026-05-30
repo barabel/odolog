@@ -80,10 +80,10 @@ src/
 ### Фаза 1 — Offline core
 *Цель: записи сохраняются в IndexedDB, без сервера*
 
-- [ ] **Проект: Vite + React + TS + Tailwind**
+- [x] **Проект: Vite + React + TS + Tailwind**
   - [x] Запускается в dev-режиме
-  - [ ] TS компилируется без ошибок
-  - [ ] Tailwind-классы применяются
+  - [x] TS компилируется без ошибок
+  - [x] Tailwind-классы применяются
 
 - [ ] **Dexie.js: схема таблиц + дефолтная машина**
   - [ ] Инстанс DB создан, схема (`vehicles`, `odometer_entries`, `fuel_entries`) определена
