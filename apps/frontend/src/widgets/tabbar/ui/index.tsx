@@ -1,8 +1,25 @@
 import { isArrayAndNotEmpty } from '@/shared/helpers/arrays';
-import type { TTabbar } from '../types';
+import type { TTabbar, TTabbarItem } from '../types';
 import { Icon } from '@/shared/ui/icon';
 import cx from 'classix';
 import { NavLink } from 'react-router';
+
+type TGetIconColorParams = {
+  iconType: TTabbarItem['iconType'];
+  isActive: boolean;
+};
+
+const getIconColor = (params: TGetIconColorParams) => {
+  const { iconType, isActive } = params;
+
+  switch (iconType) {
+    case 'stroke':
+      return isActive ? 'stroke-blue-200' : 'stroke-black-100';
+    case 'fill':
+    default:
+      return isActive ? 'fill-blue-200' : 'fill-black-100';
+  }
+};
 
 export const Tabbar: FCClass<TTabbar> = ({
   className,
@@ -18,7 +35,12 @@ export const Tabbar: FCClass<TTabbar> = ({
       )}
     >
       {hasItems && items.map((item, index) => {
-        const { icon, title, path } = item;
+        const {
+          icon,
+          iconType = 'fill',
+          title,
+          path,
+        } = item;
 
         if (!path) return null;
 
@@ -39,7 +61,7 @@ export const Tabbar: FCClass<TTabbar> = ({
                   {icon && (
                     <Icon
                       className={cx(
-                        isActive ? 'fill-blue-200' : 'fill-black-100',
+                        getIconColor({ isActive, iconType }),
                       )}
                       icon={icon}
                     />

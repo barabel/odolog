@@ -1,7 +1,8 @@
 import type { IconsArray } from '@/shared/enums/icons';
 
-type TTabbarItem = {
+export type TTabbarItem = {
   icon?: IconsArray;
+  iconType?: 'fill' | 'stroke';
   title?: string;
   path?: string;
 };

@@ -1,6 +1,8 @@
 {
   "tabbar": {
-    "list": "Записи"
+    "list": "Записи",
+    "analytics": "Аналитика",
+    "settings": "Настройки"
   },
   "db": {
     "defaultName": "Моя машина"

@@ -11,6 +11,18 @@ const tabbarItems: TTabbar['items'] = [
     title: i18n.t('tabbar.list'),
     path: ROUTES_PATHS.LIST,
   },
+  {
+    icon: IconsArray.analytics,
+    title: i18n.t('tabbar.analytics'),
+    path: ROUTES_PATHS.ANALYTICS,
+    iconType: 'stroke',
+  },
+  {
+    icon: IconsArray.settings,
+    title: i18n.t('tabbar.settings'),
+    path: ROUTES_PATHS.SETTINGS,
+    iconType: 'stroke',
+  },
 ];
 
 export const LayoutIndex: FCClass = ({

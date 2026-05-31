@@ -25,7 +25,7 @@ All commands run from the monorepo root via npm workspaces.
 **Monorepo** (npm workspaces):
 - `apps/frontend` — React 19 PWA (Vite + TypeScript + Tailwind CSS)
 - `apps/backend` — Node/Express stub, not yet implemented
-- `packages/shared` — shared TypeScript types used by both apps
+- `packages/shared` — shared TypeScript types (`@odolog/shared`), used by both apps
 
 **Frontend follows Feature-Sliced Design (FSD).** Dependency rule: layers import only from layers below.
 
@@ -48,11 +48,32 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 
 **Path alias:** `@/` maps to `apps/frontend/src/` (configured in Vite + tsconfig).
 
-**Routing:** HashRouter (react-router v7). Routes defined in `shared/config/routes.ts`.
+**Routing:** BrowserRouter (react-router v7). Route path constants in `shared/config/routes.ts`.
 
-**Styling:** Tailwind CSS 4 via `@tailwindcss/vite` plugin. Sass available for edge cases.
+**Styling:** Tailwind CSS 4 via `@tailwindcss/vite` plugin. SCSS доступен для edge-cases; кастомные миксины/функции в `assets/styles/lib/`.
+
+- Spacing unit: `--spacing: 0.0625rem` → 1 unit = 1px. `p-12` = 12px, `h-96` = 96px.
+- Colors: `black-100`, `blue-100` (#F6F9FE light), `blue-200` (#437AED accent), `gray-100` (#F2F3F5), `white-100`.
+- Typography: `.t1` = Onest 16px/400 (defined in `assets/styles/typography.scss` as a Tailwind component).
+- Base `<main>` element: `max-width: 375px`, centered — app is designed for mobile viewport width.
 
 **CSS utility:** `classix` (`cx()`) for conditional class merging.
+
+**Icons:** Custom Vite plugin (`apps/frontend/plugins/vite-plugin-icon-sprite.ts`) compiles SVGs from `src/assets/svg/` into `/public/sprite.svg` and auto-generates `shared/enums/icons/index.ts` enum on dev server start and on file changes. To add an icon: drop SVG into `src/assets/svg/`, the enum and sprite regenerate automatically. Icon component renders `<svg><use href="/sprite.svg#name">`.
+
+**i18n:** `i18next` + `react-i18next`. Initialized before app render (`src/i18n/`); Russian only (`src/locales/ru.json`). Used in DB `populate` hook for default vehicle name.
+
+**Shared package:** `@odolog/shared` (`packages/shared`) — shared TypeScript types imported by both apps. Currently contains `TVehicles`.
+
+**Global types** (no import needed, declared in `src/global.d.ts`):
+- `FCClass<P>` — React FC with optional `className` + `children` props.
+- `GetElementTypeFromArray<T>` — extracts element type from array type.
+
+## Current state (Phase 1 in progress)
+
+- DB schema + default vehicle: done
+- Routing + tabbar: done (Analytics, Settings are stubs)
+- List page, forms, FAB speed-dial: not yet implemented
 
 ## Domain
 
