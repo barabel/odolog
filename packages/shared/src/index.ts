@@ -1,1 +1,1 @@
-export { TVehicles } from './types';
+export type { TVehicles } from './types';
