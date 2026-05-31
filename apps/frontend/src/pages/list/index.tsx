@@ -2,7 +2,7 @@ import { db } from '@/shared/lib/db';
 import cx from 'classix';
 import { useLiveQuery } from 'dexie-react-hooks';
 
-export const MainPage: FCClass = ({
+export const ListPage: FCClass = ({
   className,
 }) => {
   const vehicles = useLiveQuery(() => {
@@ -13,7 +13,7 @@ export const MainPage: FCClass = ({
   return (
     <div
       className={cx(
-        'mt-300 ml-300 t1',
+        't1',
         className,
       )}
     >

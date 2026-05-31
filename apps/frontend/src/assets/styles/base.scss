@@ -4,6 +4,11 @@ html {
   --font-onest: "Onest", system-ui, sans-serif;
 
   --color-black-100: #000000;
+
+  --color-blue-100: #F6F9FE;
+  --color-blue-200: #437AED;
+
+  --color-gray-100: #F2F3F5;
 }
 
 body {
@@ -18,12 +23,10 @@ body {
   color: var(--color-blue-700);
 }
 
-#root {
-  min-height: 100vh;
-}
-
 main {
   min-height: 100vh;
+  max-width: 375px;
+  margin: 0 auto;
 }
 
 button,

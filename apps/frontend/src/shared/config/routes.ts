@@ -1,3 +1,5 @@
 export const ROUTES_PATHS = {
-  MAIN: '/',
+  LIST: '/',
+  ANALYTICS: '/analytics',
+  SETTINGS: '/settings',
 } as const;
