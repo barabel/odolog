@@ -1,4 +1,7 @@
 {
+  "tabbar": {
+    "list": "Записи"
+  },
   "db": {
     "defaultName": "Моя машина"
   }

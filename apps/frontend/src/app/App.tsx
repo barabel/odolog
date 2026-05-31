@@ -1,16 +1,17 @@
-import { MainPage } from '@/pages/main';
-import { HashRouter, Route, Routes } from 'react-router';
+import { ListPage } from '@/pages/list';
+import { BrowserRouter, Route, Routes } from 'react-router';
 import { ROUTES_PATHS } from '@/shared/config/routes';
+import { LayoutIndex } from './layouts/index';
 
 const App: FCClass = () => {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
-        <Route path={ROUTES_PATHS.MAIN}>
-          <Route index element={<MainPage />} />
+        <Route path={ROUTES_PATHS.LIST} element={<LayoutIndex />}>
+          <Route index element={<ListPage />} />
         </Route>
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 

@@ -1,3 +1,4 @@
 export const ROUTES_PATHS = {
-  MAIN: '/',
+  LIST: '/',
+  SETTINGS: '/settings',
 } as const;
