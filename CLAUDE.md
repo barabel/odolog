@@ -31,14 +31,17 @@ All commands run from the monorepo root via npm workspaces.
 
 ```
 src/
-  app/        # providers, routing, global styles
-  pages/      # dashboard, history, analytics
-  widgets/    # composite blocks (entry-list, sync-status-bar)
-  features/   # add-odometer-entry, add-fuel-entry, sync
-  entities/   # vehicle, odometer-entry, fuel-entry
+  app/        # providers, routing, global styles, layouts
+  pages/      # list, analytics, settings
+  widgets/    # composite blocks (tabbar, list)
+  features/   # add-odometer-entry, add-fuel-entry, sync (planned)
+  entities/   # vehicle, odometer-entry, fuel-entry (planned)
   shared/
-    lib/      # db.ts (Dexie/IndexedDB), api.ts (fetch client), uuid.ts
-    ui/       # reusable components
+    lib/      # db/ (Dexie/IndexedDB), id.ts (nanoid)
+    ui/       # reusable components (Icon, ...)
+    config/   # routes.ts
+    enums/    # auto-generated icons enum
+    helpers/  # array/util helpers
     types/    # common TypeScript types
 ```
 
@@ -48,7 +51,9 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 
 **Path alias:** `@/` maps to `apps/frontend/src/` (configured in Vite + tsconfig).
 
-**Routing:** BrowserRouter (react-router v7). Route path constants in `shared/config/routes.ts`.
+**Routing:** BrowserRouter (react-router v7). Routes are **vehicle-scoped** — every page lives under `/:vehicleId` (`/:vehicleId`, `/:vehicleId/analytics`, `/:vehicleId/settings`). Root `/` redirects (replace) to the first vehicle's list. Path constants + builders in `shared/config/routes.ts` (`ROUTES.list(id)`, `ROUTES.patterns.*`).
+
+**Data layer:** Single Dexie DB `odolog` (`shared/lib/db`), v1 with 3 tables: `vehicles`, `odometerEntries`, `fuelEntries`. Field names are **camelCase** (`vehicleId`, `updatedAt`, `deletedAt`). Soft delete via `deletedAt: number | null` (UI filters `deletedAt === null`). On first run the `populate` hook seeds one default vehicle (waits for i18n init). Live data via `useLiveQuery` (dexie-react-hooks). IDs: `genId(size?)` (nanoid, 21 default) for entries, `genVehicleId()` (6-char URL-safe custom alphabet) for vehicles — both in `shared/lib/id.ts`.
 
 **Styling:** Tailwind CSS 4 via `@tailwindcss/vite` plugin. SCSS доступен для edge-cases; кастомные миксины/функции в `assets/styles/lib/`.
 
@@ -63,7 +68,7 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 
 **i18n:** `i18next` + `react-i18next`. Initialized before app render (`src/i18n/`); Russian only (`src/locales/ru.json`). Used in DB `populate` hook for default vehicle name.
 
-**Shared package:** `@odolog/shared` (`packages/shared`) — shared TypeScript types imported by both apps. Currently contains `TVehicles`.
+**Shared package:** `@odolog/shared` (`packages/shared`) — shared TypeScript types imported by both apps: `TVehicles`, `TOdometerEntries`, `TFuelEntries`.
 
 **Global types** (no import needed, declared in `src/global.d.ts`):
 - `FCClass<P>` — React FC with optional `className` + `children` props.
@@ -71,13 +76,16 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 
 ## Current state (Phase 1 in progress)
 
-- DB schema + default vehicle: done
-- Routing + tabbar: done (Analytics, Settings are stubs)
-- List page, forms, FAB speed-dial: not yet implemented
+- DB schema (3 tables) + default vehicle: done
+- Vehicle-scoped routing + tabbar: done (Analytics, Settings are stubs)
+- List widget (`widgets/list`): in progress
+- Forms (odometer/fuel bottom sheets), FAB speed-dial: not yet implemented
+
+Phase tracking and full UI spec live in `docs/plan.md`.
 
 ## Domain
 
-Read `CONTEXT.md` for domain language (Vehicle, OdometerEntry, FuelEntry, Mileage, Consumption, Sync) and sync protocol details (UUID client-side IDs, `updated_at` conflict resolution).
+Read `CONTEXT.md` for domain language (Vehicle, OdometerEntry, FuelEntry, Mileage, Consumption, Sync) and sync protocol details (nanoid client-side IDs, `synced` flag, `updatedAt` last-write-wins conflict resolution, `deletedAt` soft delete).
 
 ---
 

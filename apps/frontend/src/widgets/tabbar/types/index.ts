@@ -5,6 +5,7 @@ export type TTabbarItem = {
   iconType?: 'fill' | 'stroke';
   title?: string;
   path?: string;
+  end?: boolean;
 };
 
 export type TTabbar = {
