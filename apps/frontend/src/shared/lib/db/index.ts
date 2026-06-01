@@ -1,15 +1,20 @@
 import Dexie, { type EntityTable } from 'dexie';
-import type { TVehicles } from '@odolog/shared';
+import type { TVehicles, TOdometerEntries, TFuelEntries } from '@odolog/shared';
 import i18n from '@/i18n';
+import { genVehicleId } from '@/shared/lib/id';
 
 export class OdologDb extends Dexie {
   vehicles!: EntityTable<TVehicles, 'id'>;
+  odometerEntries!: EntityTable<TOdometerEntries, 'id'>;
+  fuelEntries!: EntityTable<TFuelEntries, 'id'>;
 
   constructor() {
     super('odolog');
 
     this.version(1).stores({
       vehicles: 'id, name',
+      odometerEntries: 'id, vehicleId, date, synced, deletedAt',
+      fuelEntries: 'id, vehicleId, date, synced, deletedAt',
     });
   }
 };
@@ -22,7 +27,7 @@ db.on('populate', async () => {
   }
 
   db.vehicles.add({
-    id: crypto.randomUUID(),
+    id: genVehicleId(),
     name: i18n.t('db.defaultName'),
   });
 });

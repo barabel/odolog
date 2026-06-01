@@ -25,17 +25,18 @@
 // vehicles
 { id: string, name: string }
 
-// odometer_entries
-{ id: string, vehicle_id: string, date: string, odometer: number, synced: boolean, updated_at: number }
+// odometerEntries
+{ id: string, vehicleId: string, date: string, odometer: number, synced: boolean, updatedAt: number, deletedAt: number | null }
 
-// fuel_entries
-{ id: string, vehicle_id: string, date: string, odometer: number, liters: number, total_cost: number, synced: boolean, updated_at: number }
+// fuelEntries
+{ id: string, vehicleId: string, date: string, odometer: number, liters: number, totalCost: number, synced: boolean, updatedAt: number, deletedAt: number | null }
 ```
 
-- `id` — UUID, генерируется на клиенте
+- `id` — nanoid, генерируется на клиенте (записи — 21 симв, машины — 6 симв для URL)
 - `date` — ISO строка (YYYY-MM-DD), по умолчанию сегодня, редактируемая
 - `synced` — флаг локальной синхронизации
-- `updated_at` — timestamp (ms), при конфликте побеждает большее значение
+- `updatedAt` — timestamp (ms), при конфликте побеждает большее значение
+- `deletedAt` — timestamp (ms) мягкого удаления, `null` если запись активна
 
 Вычисляемые поля (не хранятся): пробег между записями, расход л/100км, цена за литр.
 
@@ -46,8 +47,8 @@
 Двусторонняя, сервер — источник истины.
 
 1. Push: отправляем все записи где `synced = false`
-2. Pull: тянем с сервера все записи новее `last_sync_at`
-3. Конфликт по одному `id`: побеждает запись с бо́льшим `updated_at`
+2. Pull: тянем с сервера все записи новее `lastSyncAt`
+3. Конфликт по одному `id`: побеждает запись с бо́льшим `updatedAt`
 4. Авто-sync при появлении сети + кнопка ручного sync
 
 ---
@@ -156,7 +157,7 @@ src/
   - [ ] Поле даты (по умолчанию сегодня)
   - [ ] Поле одометра, обязательное, > 0
   - [ ] Дельта от последней записи в реальном времени (зелёная/красная)
-  - [ ] Сохранение в Dexie с `id`, `synced: false`, `updated_at`
+  - [ ] Сохранение в Dexie с `id`, `synced: false`, `updatedAt`
   - [ ] После сохранения: шит закрывается, запись появляется в списке с анимацией
 
 - [ ] **Bottom sheet — форма заправки**
@@ -166,7 +167,7 @@ src/
   - [ ] Поле общей стоимости
   - [ ] Вычисляемое "Цена за литр" в реальном времени
   - [ ] Все поля обязательны, числовые > 0
-  - [ ] Сохранение в Dexie с `id`, `synced: false`, `updated_at`
+  - [ ] Сохранение в Dexie с `id`, `synced: false`, `updatedAt`
   - [ ] После сохранения: шит закрывается, запись появляется в списке с анимацией
 
 ### Фаза 2 — Backend
@@ -177,8 +178,8 @@ src/
 - [ ] `express.static('dist')` + SPA fallback (`*` → `index.html`)
 - [ ] `POST /auth/login` → JWT
 - [ ] JWT middleware для защиты роутов
-- [ ] CRUD для `odometer_entries`
-- [ ] CRUD для `fuel_entries`
+- [ ] CRUD для `odometerEntries`
+- [ ] CRUD для `fuelEntries`
 
 ### Фаза 3 — Sync + PWA
 *TODO: добавить критерии готовности для каждого шага*
@@ -188,7 +189,7 @@ src/
 - [ ] vite-plugin-pwa: манифест, иконки, installable
 - [ ] Service worker: кэш статики (offline режим)
 - [ ] Sync: push несинхронизированных записей
-- [ ] Sync: pull новых записей по `last_sync_at`
+- [ ] Sync: pull новых записей по `lastSyncAt`
 - [ ] Авто-sync при появлении сети
 - [ ] Кнопка ручной синхронизации + индикатор статуса
 

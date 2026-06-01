@@ -40,6 +40,7 @@ export const Tabbar: FCClass<TTabbar> = ({
           iconType = 'fill',
           title,
           path,
+          end,
         } = item;
 
         if (!path) return null;
@@ -54,6 +55,7 @@ export const Tabbar: FCClass<TTabbar> = ({
               );
             }}
             to={path}
+            end={end}
           >
             {({ isActive }) => {
               return (

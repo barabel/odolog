@@ -1,33 +1,36 @@
 import i18n from '@/i18n';
-import { ROUTES_PATHS } from '@/shared/config/routes';
+import { ROUTES } from '@/shared/config/routes';
 import { IconsArray } from '@/shared/enums/icons';
 import { Tabbar, type TTabbar } from '@/widgets/tabbar';
 import cx from 'classix';
-import { Outlet } from 'react-router';
-
-const tabbarItems: TTabbar['items'] = [
-  {
-    icon: IconsArray.list,
-    title: i18n.t('tabbar.list'),
-    path: ROUTES_PATHS.LIST,
-  },
-  {
-    icon: IconsArray.analytics,
-    title: i18n.t('tabbar.analytics'),
-    path: ROUTES_PATHS.ANALYTICS,
-    iconType: 'stroke',
-  },
-  {
-    icon: IconsArray.settings,
-    title: i18n.t('tabbar.settings'),
-    path: ROUTES_PATHS.SETTINGS,
-    iconType: 'stroke',
-  },
-];
+import { Outlet, useParams } from 'react-router';
 
 export const LayoutIndex: FCClass = ({
   className,
 }) => {
+  const { vehicleId } = useParams<{ vehicleId: string }>();
+
+  const tabbarItems: TTabbar['items'] = [
+    {
+      icon: IconsArray.list,
+      title: i18n.t('tabbar.list'),
+      path: ROUTES.list(vehicleId!),
+      end: true,
+    },
+    {
+      icon: IconsArray.analytics,
+      title: i18n.t('tabbar.analytics'),
+      path: ROUTES.analytics(vehicleId!),
+      iconType: 'stroke',
+    },
+    {
+      icon: IconsArray.settings,
+      title: i18n.t('tabbar.settings'),
+      path: ROUTES.settings(vehicleId!),
+      iconType: 'stroke',
+    },
+  ];
+
   return (
     <main
       className={cx(
