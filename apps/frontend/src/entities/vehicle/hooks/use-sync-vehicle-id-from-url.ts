@@ -1,11 +1,14 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router';
-import { useActiveVehicleStore } from './active-vehicle.store';
+import { useActiveVehicleStore } from '../store/active-vehicle.store';
 
-// Зеркалит vehicleId из URL в store (URL — источник правды).
-// Вызывается там, где в URL есть :vehicleId (list/analytics).
-export const useSyncActiveVehicle = () => {
+/**
+ * Синхронизирует :vehicleId из URL в Zustand-стор.
+ * URL — источник истины; стор — производная для страниц без vehicleId в пути.
+ */
+export const useSyncVehicleIdFromUrl = () => {
   const { vehicleId } = useParams<{ vehicleId: string }>();
+
   const setActiveVehicleId = useActiveVehicleStore((state) => {
     return state.setActiveVehicleId;
   });

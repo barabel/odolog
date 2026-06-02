@@ -6,6 +6,11 @@ type TActiveVehicleState = {
   setActiveVehicleId: (id: string) => void;
 };
 
+/**
+ * Хранит ID активного ТС, персистентно в localStorage.
+ * Читается на страницах без vehicleId в URL (редирект с /, /settings).
+ * Источник истины — URL; стор обновляется через useSyncVehicleIdFromUrl.
+ */
 export const useActiveVehicleStore = create<TActiveVehicleState>()(
   persist(
     set => ({
