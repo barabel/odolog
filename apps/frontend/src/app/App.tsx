@@ -1,37 +1,10 @@
 import { ListPage } from '@/pages/list';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
+import { BrowserRouter, Route, Routes } from 'react-router';
 import { ROUTES } from '@/shared/config/routes';
 import { LayoutIndex } from './layouts/index';
 import { AnalyticsPage } from '@/pages/analytics';
 import { SettingsPage } from '@/pages/settings';
-import { db } from '@/shared/lib/db';
-import { useLiveQuery } from 'dexie-react-hooks';
-import { useActiveVehicleStore } from '@/entities/vehicle';
-
-const VehicleRedirect: FCClass = () => {
-  const vehicles = useLiveQuery(() => {
-    return db.vehicles.toArray();
-  });
-  const activeVehicleId = useActiveVehicleStore((state) => {
-    return state.activeVehicleId;
-  });
-
-  if (!vehicles?.length) {
-    return null;
-  }
-
-  const exists = vehicles.some((vehicle) => {
-    return vehicle.id === activeVehicleId;
-  });
-  const targetId = exists ? activeVehicleId! : vehicles[0].id;
-
-  return (
-    <Navigate
-      to={ROUTES.list(targetId)}
-      replace
-    />
-  );
-};
+import { VehicleRedirect } from '@/entities/vehicle';
 
 const App: FCClass = () => {
   return (

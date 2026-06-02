@@ -2,30 +2,28 @@ import i18n from '@/i18n';
 import { ROUTES } from '@/shared/config/routes';
 import { IconsArray } from '@/shared/enums/icons';
 import { Tabbar, type TTabbar } from '@/widgets/tabbar';
-import { useActiveVehicleStore, useSyncActiveVehicle } from '@/entities/vehicle';
+import { useVehicleRouting } from '@/entities/vehicle';
 import cx from 'classix';
-import { Navigate, Outlet, useParams } from 'react-router';
+import { Navigate, Outlet } from 'react-router';
 
 export const LayoutIndex: FCClass = ({
   className,
 }) => {
-  const { vehicleId: paramVehicleId } = useParams<{ vehicleId: string }>();
-  const activeVehicleId = useActiveVehicleStore((state) => {
-    return state.activeVehicleId;
-  });
+  const state = useVehicleRouting();
 
-  useSyncActiveVehicle();
-
-  const vehicleId = paramVehicleId ?? activeVehicleId;
-
-  if (!vehicleId) {
-    return (
-      <Navigate
-        to="/"
-        replace
-      />
-    );
+  switch (state.status) {
+    case 'loading':
+      return null;
+    case 'redirect':
+      return (
+        <Navigate
+          to={state.to}
+          replace
+        />
+      );
   }
+
+  const { vehicleId } = state;
 
   const tabbarItems: TTabbar['items'] = [
     {

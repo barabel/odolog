@@ -10,12 +10,12 @@ export const SettingsPage: FCClass = ({
     return state.activeVehicleId;
   });
 
-  const vehicle = useLiveQuery(async () => {
+  const vehicle = useLiveQuery(() => {
     if (!activeVehicleId) {
-      return null;
+      return;
     }
 
-    return (await db.vehicles.get(activeVehicleId)) ?? null;
+    return db.vehicles.get(activeVehicleId);
   }, [activeVehicleId]);
 
   return (
