@@ -10,7 +10,11 @@ export const ListPage: FCClass = ({
   const { vehicleId } = useParams<{ vehicleId: string }>();
 
   const vehicle = useLiveQuery(() => {
-    return db.vehicles.get(vehicleId!);
+    if (!vehicleId) {
+      return;
+    }
+
+    return db.vehicles.get(vehicleId);
   }, [vehicleId]);
 
   return (
