@@ -18,7 +18,7 @@ npm run lint
 npm run check
 ```
 
-All commands run from the monorepo root via npm workspaces.
+All commands run from the monorepo root via npm workspaces. Node `>=22.16.0` (`.nvmrc` pins `v22.16.0`).
 
 ## Architecture
 
@@ -35,7 +35,7 @@ src/
   pages/      # list, analytics, settings
   widgets/    # composite blocks (tabbar, list)
   features/   # add-odometer-entry, add-fuel-entry, sync (planned)
-  entities/   # vehicle, odometer-entry, fuel-entry (planned)
+  entities/   # vehicle (active-vehicle store); odometer-entry, fuel-entry (planned)
   shared/
     lib/      # db/ (Dexie/IndexedDB), id.ts (nanoid)
     ui/       # reusable components (Icon, ...)
@@ -51,7 +51,9 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 
 **Path alias:** `@/` maps to `apps/frontend/src/` (configured in Vite + tsconfig).
 
-**Routing:** BrowserRouter (react-router v7). Routes are **vehicle-scoped** — every page lives under `/:vehicleId` (`/:vehicleId`, `/:vehicleId/analytics`, `/:vehicleId/settings`). Root `/` redirects (replace) to the first vehicle's list. Path constants + builders in `shared/config/routes.ts` (`ROUTES.list(id)`, `ROUTES.patterns.*`).
+**Routing:** BrowserRouter (react-router v7). List and analytics are **vehicle-scoped** (`/:vehicleId`, `/:vehicleId/analytics`); settings is **global** (`/settings`, no `vehicleId`). Root `/` redirects (replace) to the active vehicle's list (or first vehicle if none active). Path constants + builders in `shared/config/routes.ts` (`ROUTES.list(id)`, `ROUTES.settings`, `ROUTES.patterns.*`).
+
+**Active Vehicle (state):** Zustand store `useActiveVehicleStore` (`entities/vehicle`), persisted to localStorage (`odolog:active-vehicle`), holds `activeVehicleId`. **URL is the source of truth** — `useSyncActiveVehicle()` mirrors `:vehicleId` from URL into the store on vehicle-scoped pages; the store is read only where the URL lacks a vehicle (`/` redirect, `/settings`). Active Vehicle is device-local — not part of the sync protocol. See `docs/adr/0001-active-vehicle-url-vs-store.md`. **Zustand** (`zustand` v5) is the app's client-state library.
 
 **Data layer:** Single Dexie DB `odolog` (`shared/lib/db`), v1 with 3 tables: `vehicles`, `odometerEntries`, `fuelEntries`. Field names are **camelCase** (`vehicleId`, `updatedAt`, `deletedAt`). Soft delete via `deletedAt: number | null` (UI filters `deletedAt === null`). On first run the `populate` hook seeds one default vehicle (waits for i18n init). Live data via `useLiveQuery` (dexie-react-hooks). IDs: `genId(size?)` (nanoid, 21 default) for entries, `genVehicleId()` (6-char URL-safe custom alphabet) for vehicles — both in `shared/lib/id.ts`.
 
@@ -77,15 +79,15 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 ## Current state (Phase 1 in progress)
 
 - DB schema (3 tables) + default vehicle: done
-- Vehicle-scoped routing + tabbar: done (Analytics, Settings are stubs)
+- Routing (vehicle-scoped list/analytics + global settings) + tabbar + active-vehicle store: done (Analytics, Settings are stubs)
 - List widget (`widgets/list`): in progress
 - Forms (odometer/fuel bottom sheets), FAB speed-dial: not yet implemented
 
-Phase tracking and full UI spec live in `docs/plan.md`.
+Phase tracking and full UI spec live in `docs/plan.md`. Architectural decisions in `docs/adr/`.
 
 ## Domain
 
-Read `CONTEXT.md` for domain language (Vehicle, OdometerEntry, FuelEntry, Mileage, Consumption, Sync) and sync protocol details (nanoid client-side IDs, `synced` flag, `updatedAt` last-write-wins conflict resolution, `deletedAt` soft delete).
+Read `CONTEXT.md` for domain language (Vehicle, OdometerEntry, FuelEntry, Mileage, Consumption, Sync, Active Vehicle) and sync protocol details (nanoid client-side IDs, `synced` flag, `updatedAt` last-write-wins conflict resolution, `deletedAt` soft delete).
 
 ---
 

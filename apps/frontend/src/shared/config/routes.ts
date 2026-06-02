@@ -6,5 +6,5 @@ export const ROUTES = {
   },
   list: (vehicleId: string) => `/${vehicleId}`,
   analytics: (vehicleId: string) => `/${vehicleId}/analytics`,
-  settings: (vehicleId: string) => `/${vehicleId}/settings`,
+  settings: '/settings',
 } as const;
