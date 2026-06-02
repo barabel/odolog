@@ -1,4 +1,4 @@
 export { useActiveVehicleStore } from './store/active-vehicle.store';
-export { useSyncVehicleIdFromUrl } from './hooks/use-sync-vehicle-id-from-url';
-export { useResolvedVehicleId } from './hooks/use-resolved-vehicle-id';
+export { useVehicleRouting } from './hooks/use-vehicle-routing';
+export { resolveVehicleRouting, type VehicleRoutingState } from './lib/resolve-vehicle-routing';
 export { VehicleRedirect } from './ui/vehicle-redirect';

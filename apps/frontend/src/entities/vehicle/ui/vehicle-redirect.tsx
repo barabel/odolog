@@ -1,17 +1,17 @@
 import { ROUTES } from '@/shared/config/routes';
 import { Navigate } from 'react-router';
-import { useResolvedVehicleId } from '../hooks/use-resolved-vehicle-id';
+import { useVehicleRouting } from '../hooks/use-vehicle-routing';
 
 export const VehicleRedirect: FCClass = () => {
-  const targetId = useResolvedVehicleId();
+  const state = useVehicleRouting();
 
-  if (!targetId) {
+  if (state.status !== 'ready') {
     return null;
   }
 
   return (
     <Navigate
-      to={ROUTES.list(targetId)}
+      to={ROUTES.list(state.vehicleId)}
       replace
     />
   );
