@@ -6,19 +6,28 @@ import { AnalyticsPage } from '@/pages/analytics';
 import { SettingsPage } from '@/pages/settings';
 import { db } from '@/shared/lib/db';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { useActiveVehicleStore } from '@/entities/vehicle';
 
 const VehicleRedirect: FCClass = () => {
   const vehicles = useLiveQuery(() => {
     return db.vehicles.toArray();
+  });
+  const activeVehicleId = useActiveVehicleStore((state) => {
+    return state.activeVehicleId;
   });
 
   if (!vehicles?.length) {
     return null;
   }
 
+  const exists = vehicles.some((vehicle) => {
+    return vehicle.id === activeVehicleId;
+  });
+  const targetId = exists ? activeVehicleId! : vehicles[0].id;
+
   return (
     <Navigate
-      to={ROUTES.list(vehicles[0].id)}
+      to={ROUTES.list(targetId)}
       replace
     />
   );
@@ -29,18 +38,21 @@ const App: FCClass = () => {
     <BrowserRouter>
       <Routes>
         <Route
-          path={ROUTES.patterns.vehicle}
           element={<LayoutIndex />}
         >
           <Route
-            index
-            element={<ListPage />}
-          />
+            path={ROUTES.patterns.vehicle}
+          >
+            <Route
+              index
+              element={<ListPage />}
+            />
 
-          <Route
-            path={ROUTES.patterns.analytics}
-            element={<AnalyticsPage />}
-          />
+            <Route
+              path={ROUTES.patterns.analytics}
+              element={<AnalyticsPage />}
+            />
+          </Route>
 
           <Route
             path={ROUTES.patterns.settings}
