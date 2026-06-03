@@ -5,7 +5,7 @@ import cx from 'classix';
 import { NavLink } from 'react-router';
 import { motion } from 'motion/react';
 
-const ACTIVE_BG_LAYOUT_ID = 'tabbar-active-bg';
+const ACTIVE_BG_LAYOUT_ID = 'tabbar-active-bg' as const;
 
 type TGetIconColorParams = {
   iconType: TTabbarItem['iconType'];
@@ -65,9 +65,9 @@ export const Tabbar: FCClass<TTabbar> = ({
                       className="absolute inset-0 bg-blue-100 rounded-xl"
                       layoutId={ACTIVE_BG_LAYOUT_ID}
                       transition={{
-                        type: 'spring',
-                        stiffness: 500,
-                        damping: 40,
+                        type: 'tween',
+                        ease: 'linear',
+                        duration: 0.15,
                       }}
                     />
                   )}
@@ -75,7 +75,7 @@ export const Tabbar: FCClass<TTabbar> = ({
                   {icon && (
                     <Icon
                       className={cx(
-                        'relative transition-colors duration-300',
+                        'z-1 relative transition-colors duration-300',
                         getIconColor({ isActive, iconType }),
                       )}
                       icon={icon}
@@ -85,7 +85,7 @@ export const Tabbar: FCClass<TTabbar> = ({
                   {title && (
                     <div
                       className={cx(
-                        'relative transition-colors duration-300',
+                        'z-1 relative transition-colors duration-300',
                         isActive ? 'text-blue-200' : 'text-black-100',
                         't1',
                       )}
