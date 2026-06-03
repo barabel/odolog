@@ -5,6 +5,7 @@ import { Icon } from '../../icon';
 import { IconsArray } from '@/shared/enums/icons';
 import { useState } from 'react';
 import { AnimatePresence, motion, type Variants } from 'motion/react';
+import { useOutsideClick } from '@/shared/hooks/use-outside-click';
 
 const containerVariants: Variants = {
   hidden: {
@@ -40,16 +41,20 @@ export const FabButton: FCClass<TFabButton> = ({
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const rootRef = useOutsideClick<HTMLDivElement>(() => setIsOpen(false), isOpen);
+
   const handleButtonClick = () => {
     setIsOpen(!isOpen);
   };
 
   const handleItemClick = (value: TFabButton['items'][0]['value']) => {
     onFabItemClick?.(value);
+    setIsOpen(false);
   };
 
   return (
     <div
+      ref={rootRef}
       className={cx(
         'flex flex-col gap-12 pointer-events-none',
         className,
