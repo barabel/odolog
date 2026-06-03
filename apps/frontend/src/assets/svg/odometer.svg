@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <g>
+    <!-- left edge line -->
+    <rect x="318" y="220" width="60" height="540" rx="30" transform="rotate(11 348 490)"/>
+    <!-- right edge line -->
+    <rect x="646" y="220" width="60" height="540" rx="30" transform="rotate(-11 676 490)"/>
+    <!-- center dashes -->
+    <rect x="482" y="226" width="60" height="120" rx="30"/>
+    <rect x="482" y="392" width="60" height="120" rx="30"/>
+    <rect x="482" y="568" width="60" height="120" rx="30"/>
+  </g>
+</svg>

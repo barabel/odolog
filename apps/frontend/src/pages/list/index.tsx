@@ -20,10 +20,12 @@ export const ListPage: FCClass = ({
   return (
     <div
       className={cx(
+        'h-full',
         className,
       )}
     >
       <List
+        className="h-full"
         vehicleName={vehicle?.name}
       />
     </div>

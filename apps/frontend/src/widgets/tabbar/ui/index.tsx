@@ -3,6 +3,9 @@ import type { TTabbar, TTabbarItem } from '../types';
 import { Icon } from '@/shared/ui/icon';
 import cx from 'classix';
 import { NavLink } from 'react-router';
+import { motion } from 'motion/react';
+
+const ACTIVE_BG_LAYOUT_ID = 'tabbar-active-bg' as const;
 
 type TGetIconColorParams = {
   iconType: TTabbarItem['iconType'];
@@ -48,21 +51,31 @@ export const Tabbar: FCClass<TTabbar> = ({
         return (
           <NavLink
             key={index}
-            className={({ isActive }) => {
-              return cx(
-                'shrink-0 flex flex-col items-center gap-8 p-12 rounded-xl',
-                isActive ? 'bg-blue-100' : '',
-              );
-            }}
+            className={cx(
+              'relative shrink-0 flex flex-col items-center gap-8 p-12 rounded-xl',
+            )}
             to={path}
             end={end}
           >
             {({ isActive }) => {
               return (
                 <>
+                  {isActive && (
+                    <motion.div
+                      className="absolute inset-0 bg-blue-100 rounded-xl"
+                      layoutId={ACTIVE_BG_LAYOUT_ID}
+                      transition={{
+                        type: 'tween',
+                        ease: 'linear',
+                        duration: 0.15,
+                      }}
+                    />
+                  )}
+
                   {icon && (
                     <Icon
                       className={cx(
+                        'z-1 relative transition-colors duration-300',
                         getIconColor({ isActive, iconType }),
                       )}
                       icon={icon}
@@ -72,6 +85,7 @@ export const Tabbar: FCClass<TTabbar> = ({
                   {title && (
                     <div
                       className={cx(
+                        'z-1 relative transition-colors duration-300',
                         isActive ? 'text-blue-200' : 'text-black-100',
                         't1',
                       )}

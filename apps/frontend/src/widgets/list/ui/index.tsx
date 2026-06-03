@@ -1,15 +1,19 @@
 import cx from 'classix';
+import { useTranslation } from 'react-i18next';
 import type { TList } from '../types';
 import { FabButton } from '@/shared/ui/fab-button';
+import { IconsArray } from '@/shared/enums/icons';
 
 export const List: FCClass<TList> = ({
   className,
   vehicleName,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div
       className={cx(
-        'p-16',
+        'flex flex-col p-16',
         className,
       )}
     >
@@ -22,16 +26,24 @@ export const List: FCClass<TList> = ({
       )}
 
       <FabButton
+        className="mt-auto"
         items={[
           {
-            title: '1',
+            title: t('list.fab.odometer'),
             value: '1',
+            icon: IconsArray.odometer,
+            iconClassName: 'bg-blue-100 fill-blue-200',
           },
           {
-            title: '2',
+            title: t('list.fab.fuel'),
             value: '2',
+            icon: IconsArray.fuel,
+            iconClassName: 'bg-green-100 fill-green-200',
           },
         ]}
+        onFabItemClick={(value) => {
+          console.log('value', value);
+        }}
       />
     </div>
   );
