@@ -193,15 +193,40 @@ src/
   - [ ] После сохранения: шит закрывается, запись появляется в списке с анимацией
 
 ### Фаза 2 — Backend
-*TODO: добавить критерии готовности для каждого шага*
 *Цель: API с авторизацией, данные хранятся на сервере*
 
-- [ ] Express + better-sqlite3, схема БД (те же таблицы)
-- [ ] `express.static('dist')` + SPA fallback (`*` → `index.html`)
-- [ ] `POST /auth/login` → JWT
-- [ ] JWT middleware для защиты роутов
-- [ ] CRUD для `odometerEntries`
-- [ ] CRUD для `fuelEntries`
+- [ ] **Проект: Express + better-sqlite3 + Onion-скелет**
+  - [ ] Структура `domain / application / infrastructure` создана; `domain` не импортирует ничего из внешних слоёв
+  - [ ] Сервер стартует, `GET /api/health` возвращает 200
+  - [ ] Схема SQLite создаётся при первом запуске: `vehicles`, `odometerEntries`, `fuelEntries` — поля совпадают с клиентской схемой (включая `updatedAt`, `deletedAt`)
+  - [ ] Повторный запуск сервера не пересоздаёт таблицы и не теряет данные
+  - [ ] Конфиг (порт, путь к БД, JWT-секрет) читается из env
+
+- [ ] **Статика + SPA fallback**
+  - [ ] Express отдаёт собранный `dist` фронта
+  - [ ] Прямой заход на любой клиентский роут (например `/analytics`) возвращает `index.html`, а не 404
+  - [ ] Fallback не перехватывает запросы к `/api/*` — несуществующий API-роут возвращает 404 (JSON), а не HTML
+
+- [ ] **`POST /auth/login` → JWT**
+  - [ ] Верные креды (из env) → 200 + токен; неверные → 401
+  - [ ] Токен содержит срок жизни (`exp`)
+  - [ ] JWT-секрет не захардкожен в коде
+
+- [ ] **JWT middleware**
+  - [ ] Запрос без токена, с невалидным или просроченным токеном → 401 (JSON-ошибка)
+  - [ ] Валидный токен → запрос проходит к роуту
+  - [ ] `/auth/login`, `/api/health` и статика не требуют токена
+
+- [ ] **CRUD `odometerEntries`**
+  - [ ] `PUT /api/odometer-entries/:id` — upsert: принимает клиентский `id` (nanoid), создаёт или обновляет запись
+  - [ ] `GET /api/odometer-entries?vehicleId=...&since=...` — фильтр по `updatedAt > since` (задел под pull в фазе 3); без `since` отдаёт всё
+  - [ ] `DELETE /api/odometer-entries/:id` — мягкое удаление: проставляет `deletedAt`, физически запись не удаляется
+  - [ ] Валидация: `odometer > 0`, `date` в формате `YYYY-MM-DD`, `vehicleId` существует → иначе 400 с текстом ошибки
+  - [ ] Бизнес-логика лежит в use cases (`application`), роуты — тонкие обёртки
+
+- [ ] **CRUD `fuelEntries`**
+  - [ ] Те же критерии, что и для `odometerEntries` (upsert, `since`-фильтр, soft delete)
+  - [ ] Дополнительная валидация: `liters > 0`, `totalCost > 0`
 
 ### Фаза 3 — Sync + PWA
 *TODO: добавить критерии готовности для каждого шага*
