@@ -21,7 +21,7 @@ export const SettingsPage: FCClass = ({
   return (
     <div
       className={cx(
-        't1',
+        't2',
         className,
       )}
     >

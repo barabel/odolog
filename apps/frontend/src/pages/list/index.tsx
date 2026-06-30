@@ -17,6 +17,28 @@ export const ListPage: FCClass = ({
     return db.vehicles.get(vehicleId);
   }, [vehicleId]);
 
+  const odometerEntries = useLiveQuery(() => {
+    if (!vehicleId) {
+      return [];
+    }
+
+    return db.odometerEntries
+      .where('vehicleId')
+      .equals(vehicleId)
+      .toArray();
+  }, [vehicleId]);
+
+  const fuelEntries = useLiveQuery(() => {
+    if (!vehicleId) {
+      return [];
+    }
+
+    return db.fuelEntries
+      .where('vehicleId')
+      .equals(vehicleId)
+      .toArray();
+  }, [vehicleId]);
+
   return (
     <div
       className={cx(
@@ -27,6 +49,8 @@ export const ListPage: FCClass = ({
       <List
         className="h-full"
         vehicleName={vehicle?.name}
+        fuelEntries={fuelEntries}
+        odometerEntries={odometerEntries}
       />
     </div>
   );

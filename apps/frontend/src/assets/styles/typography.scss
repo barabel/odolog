@@ -1,49 +1,141 @@
 @use '@/assets/styles/lib/index.scss' as *;
 
-%fontOnest {
+%font {
   font-family: var(--font-onest), serif;
 }
 
 @layer components {
-  // .h {
-  //   &2 {
-  //     @extend %fontOnest;
+  .h {
+    &1 {
+      @extend %font;
+      font-size: rem(42);
+      line-height: 110%;
+      letter-spacing: 0.02em;
 
-  //     font-weight: 500;
-  //     font-size: rem(20);
-  //     line-height: 120%;
-  //     letter-spacing: 0.04em;
-  //     text-transform: uppercase;
-  //   }
+      @include min-media('t') {
+        font-size: rem(56);
+      }
 
-  //   &3 {
-  //     @extend %fontOnest;
+      @include min-media('md') {
+        font-size: rem(62);
+      }
 
-  //     font-weight: 800;
-  //     font-size: rem(12);
-  //     line-height: 130%;
-  //     letter-spacing: 0.12em;
-  //     text-transform: uppercase;
-  //   }
+      @include min-media('xxl') {
+        font-size: rem(68);
+      }
+    }
 
-  //   &4 {
-  //     @extend %fontOnest;
+    &2 {
+      @extend %font;
+      font-size: rem(32);
+      line-height: 110%;
+      letter-spacing: 0.02em;
 
-  //     font-weight: 500;
-  //     font-size: rem(12);
-  //     line-height: 130%;
-  //     letter-spacing: 0.12em;
-  //     text-transform: uppercase;
-  //   }
-  // }
+      @include min-media('t') {
+        font-size: rem(42);
+      }
+
+      @include min-media('xxl') {
+        font-size: rem(56);
+      }
+    }
+
+    &3 {
+      @extend %font;
+      font-size: rem(26);
+      line-height: 110%;
+      letter-spacing: 0.02em;
+
+      @include min-media('t') {
+        font-size: rem(36);
+      }
+
+      @include min-media('xxl') {
+        font-size: rem(40);
+      }
+    }
+
+    &4 {
+      @extend %font;
+      font-size: rem(21);
+      line-height: 110%;
+      letter-spacing: 0.02em;
+
+      @include min-media('t') {
+        font-size: rem(24);
+      }
+
+      @include min-media('xxl') {
+        font-size: rem(28);
+      }
+    }
+  }
 
   .t {
     &1 {
-      @extend %fontOnest;
+      @extend %font;
+      font-size: rem(21);
+      line-height: 110%;
+      letter-spacing: -0.01em;
 
-      font-weight: 400;
-      font-size: rem(16);
-      line-height: 120%;
+      @include min-media('t') {
+        font-size: rem(24);
+      }
+
+      @include min-media('xxl') {
+        font-size: rem(28);
+      }
+    }
+
+    &2 {
+      @extend %font;
+      font-size: rem(14);
+      line-height: 110%;
+      letter-spacing: -0.01em;
+
+      @include min-media('t') {
+        font-size: rem(16);
+      }
+
+      @include min-media('xxl') {
+        font-size: rem(20);
+      }
+    }
+
+    &3 {
+      @extend %font;
+      font-size: rem(10);
+      line-height: 110%;
+      letter-spacing: -0.01em;
+
+      @include min-media('t') {
+        font-size: rem(12);
+        letter-spacing: 0em;
+      }
+
+      @include min-media('xxl') {
+        font-size: rem(14);
+      }
+    }
+
+    &4 {
+      @extend %font;
+      font-size: rem(12);
+      line-height: 110%;
+
+      @include min-media('t') {
+        font-size: rem(14);
+      }
+
+      @include min-media('xxl') {
+        font-size: rem(16);
+      }
+    }
+
+    &5 {
+      @extend %font;
+      font-size: rem(8);
+      line-height: 110%;
     }
   }
 }

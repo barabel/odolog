@@ -87,7 +87,7 @@ export const Tabbar: FCClass<TTabbar> = ({
                       className={cx(
                         'z-1 relative transition-colors duration-300',
                         isActive ? 'text-blue-200' : 'text-black-100',
-                        't1',
+                        't2',
                       )}
                     >
                       {title}
