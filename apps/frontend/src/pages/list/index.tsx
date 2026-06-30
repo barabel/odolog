@@ -17,6 +17,17 @@ export const ListPage: FCClass = ({
     return db.vehicles.get(vehicleId);
   }, [vehicleId]);
 
+  const entries = useLiveQuery(() => {
+    if (!vehicleId) {
+      return [];
+    }
+
+    return db.entries
+      .where('vehicleId')
+      .equals(vehicleId)
+      .toArray();
+  }, [vehicleId]);
+
   return (
     <div
       className={cx(
@@ -27,6 +38,7 @@ export const ListPage: FCClass = ({
       <List
         className="h-full"
         vehicleName={vehicle?.name}
+        entries={entries}
       />
     </div>
   );

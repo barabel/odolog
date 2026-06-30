@@ -3,25 +3,19 @@ export type TVehicles = {
   name: string
 }
 
-export type TOdometerEntries = {
+export type TEntryBase = {
   id: string
   vehicleId: string
-  date: string
+  measuredAt: number
   odometer: number
-  synced: boolean
+  createdAt: number
   updatedAt: number
   deletedAt: number | null
-}
-
-export type TFuelEntries = {
-  id: string
-  vehicleId: string
-  date: string
-  odometer: number
-  liters: number
-  totalCost: number
   synced: boolean
-  updatedAt: number
-  deletedAt: number | null
 }
 
+export type TOdometerEntry = TEntryBase & { type: 'odometer' }
+
+export type TFuelEntry = TEntryBase & { type: 'fuel'; liters: number; totalCost: number }
+
+export type TEntries = TOdometerEntry | TFuelEntry

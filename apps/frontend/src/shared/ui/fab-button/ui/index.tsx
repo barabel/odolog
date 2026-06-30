@@ -92,7 +92,7 @@ export const FabButton: FCClass<TFabButton> = ({
                         className={cx(
                           'flex items-center justify-center h-48 px-12 rounded-xl',
                           'shadow-[0_4px_16px] shadow-black-100/8',
-                          't1',
+                          't2',
                         )}
                       >
                         {title}
@@ -126,7 +126,7 @@ export const FabButton: FCClass<TFabButton> = ({
           'flex items-center justify-center w-52 min-w-52 h-52 ml-auto bg-blue-200 rounded-full cursor-pointer pointer-events-auto',
           'shadow-[0_3px_10px] shadow-blue-200/35',
           'transition-transform duration-300',
-          't1',
+          't2',
         )}
         onClick={handleButtonClick}
       >

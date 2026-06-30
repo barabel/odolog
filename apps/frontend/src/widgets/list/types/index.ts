@@ -1,7 +1,6 @@
-import type { TFuelEntries, TOdometerEntries } from '@odolog/shared';
+import type { TEntries } from '@odolog/shared';
 
 export type TList = {
   vehicleName?: string;
-  odometerEntries?: TOdometerEntries[];
-  fuelEntries?: TFuelEntries[];
+  entries?: TEntries[];
 };

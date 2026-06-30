@@ -3,12 +3,37 @@ import { useTranslation } from 'react-i18next';
 import type { TList } from '../types';
 import { FabButton } from '@/shared/ui/fab-button';
 import { IconsArray } from '@/shared/enums/icons';
+import { ListStub } from './stub';
+
+type TGetEntryTextParams = {
+  t: (string: string) => string;
+} & Pick<TList, 'entries'>;
+
+const getEntryText = (params: TGetEntryTextParams) => {
+  const {
+    t,
+    entries,
+  } = params;
+
+  const noEntries = !entries?.length;
+
+  if (noEntries) {
+    return t('list.entry.none');
+  };
+
+  // TODO: сделать когда отрефакторю идею
+
+  return '';
+};
 
 export const List: FCClass<TList> = ({
   className,
   vehicleName,
+  entries,
 }) => {
   const { t } = useTranslation();
+
+  const noEntries = !entries?.length;
 
   return (
     <div
@@ -17,12 +42,24 @@ export const List: FCClass<TList> = ({
         className,
       )}
     >
-      {vehicleName && (
+      <div>
+        {vehicleName && (
+          <div
+            className="h4"
+          >
+            {vehicleName}
+          </div>
+        )}
+
         <div
-          className=""
+          className="text-black-200  t2"
         >
-          {vehicleName}
+          {getEntryText({ t, entries })}
         </div>
+      </div>
+
+      {noEntries && (
+        <ListStub />
       )}
 
       <FabButton

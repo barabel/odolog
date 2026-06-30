@@ -1,20 +1,18 @@
 import Dexie, { type EntityTable } from 'dexie';
-import type { TVehicles, TOdometerEntries, TFuelEntries } from '@odolog/shared';
+import type { TVehicles, TEntries } from '@odolog/shared';
 import i18n from '@/i18n';
 import { genVehicleId } from '@/shared/lib/id';
 
 export class OdologDb extends Dexie {
   vehicles!: EntityTable<TVehicles, 'id'>;
-  odometerEntries!: EntityTable<TOdometerEntries, 'id'>;
-  fuelEntries!: EntityTable<TFuelEntries, 'id'>;
+  entries!: EntityTable<TEntries, 'id'>;
 
   constructor() {
     super('odolog');
 
     this.version(1).stores({
       vehicles: 'id, name',
-      odometerEntries: 'id, vehicleId, date, synced, deletedAt',
-      fuelEntries: 'id, vehicleId, date, synced, deletedAt',
+      entries: 'id, vehicleId, type, measuredAt, synced, deletedAt',
     });
   }
 };
