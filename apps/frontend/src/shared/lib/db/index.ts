@@ -12,15 +12,7 @@ export class OdologDb extends Dexie {
 
     this.version(1).stores({
       vehicles: 'id, name',
-      odometerEntries: 'id, vehicleId, date, synced, deletedAt',
-      fuelEntries: 'id, vehicleId, date, synced, deletedAt',
-    });
-
-    this.version(2).stores({
-      vehicles: 'id, name',
       entries: 'id, vehicleId, type, measuredAt, synced, deletedAt',
-      odometerEntries: null,
-      fuelEntries: null,
     });
   }
 };
