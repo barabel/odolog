@@ -3,45 +3,25 @@ import { useTranslation } from 'react-i18next';
 import type { TList } from '../types';
 import { FabButton } from '@/shared/ui/fab-button';
 import { IconsArray } from '@/shared/enums/icons';
-import { isArrayAndNotEmpty } from '@/shared/helpers/arrays';
 import { ListStub } from './stub';
 
 type TGetEntryTextParams = {
   t: (string: string) => string;
-} & Pick<TList, 'odometerEntries' | 'fuelEntries'>;
+} & Pick<TList, 'entries'>;
 
 const getEntryText = (params: TGetEntryTextParams) => {
   const {
     t,
-    fuelEntries,
-    odometerEntries,
+    entries,
   } = params;
 
-  const hasOdometerEntries = isArrayAndNotEmpty(odometerEntries);
-  const hasFuelEntries = isArrayAndNotEmpty(fuelEntries);
-
-  const noEntries = !hasOdometerEntries && !hasFuelEntries;
+  const noEntries = !entries?.length;
 
   if (noEntries) {
     return t('list.entry.none');
   };
 
   // TODO: сделать когда отрефакторю идею
-  // let odometerLastDate = '';
-  // if (hasOdometerEntries) {
-  //   const nonDeletedOdomenterEntries = odometerEntries.filter(entry => typeof entry.deletedAt === 'number');
-  //   const lastOdometerEntry = nonDeletedOdomenterEntries.reduce((a, b) => (a.odometer > b.odometer) ? a : b);
-
-  //   odometerLastDate = lastOdometerEntry.date;
-  // }
-
-  // let fuelLastDate = '';
-  // if (hasFuelEntries) {
-  //   const nonDeletedFuelEntries = fuelEntries.filter(entry => typeof entry.deletedAt === 'number');
-  //   const lastFuelEntry = nonDeletedFuelEntries.reduce((a, b) => (a.odometer > b.odometer ? a : b));
-
-  //   fuelLastDate = lastFuelEntry.date;
-  // }
 
   return '';
 };
@@ -49,15 +29,11 @@ const getEntryText = (params: TGetEntryTextParams) => {
 export const List: FCClass<TList> = ({
   className,
   vehicleName,
-  odometerEntries,
-  fuelEntries,
+  entries,
 }) => {
   const { t } = useTranslation();
 
-  const hasOdometerEntries = isArrayAndNotEmpty(odometerEntries);
-  const hasFuelEntries = isArrayAndNotEmpty(fuelEntries);
-
-  const noEntries = !hasOdometerEntries && !hasFuelEntries;
+  const noEntries = !entries?.length;
 
   return (
     <div
@@ -78,7 +54,7 @@ export const List: FCClass<TList> = ({
         <div
           className="text-black-200  t2"
         >
-          {getEntryText({ t, fuelEntries, odometerEntries })}
+          {getEntryText({ t, entries })}
         </div>
       </div>
 

@@ -1,1 +1,1 @@
-export type { TVehicles, TOdometerEntries, TFuelEntries } from './types';
+export type { TVehicles, TEntries, TOdometerEntry, TFuelEntry } from './types';
