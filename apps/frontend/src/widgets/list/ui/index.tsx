@@ -42,17 +42,19 @@ export const List: FCClass<TList> = ({
         className,
       )}
     >
-      <div>
+      <div
+        className="mb-20"
+      >
         {vehicleName && (
           <div
-            className="h4"
+            className="h3"
           >
             {vehicleName}
           </div>
         )}
 
         <div
-          className="text-black-200  t2"
+          className="text-black-200 t2"
         >
           {getEntryText({ t, entries })}
         </div>
