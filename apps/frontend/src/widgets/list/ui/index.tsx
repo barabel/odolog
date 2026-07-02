@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import type { TList } from '../types';
 import { FabButton } from '@/shared/ui/fab-button';
 import { IconsArray } from '@/shared/enums/icons';
+import { useDrawer } from '@/shared/lib/drawer';
 import { ListStub } from './stub';
 
 type TGetEntryTextParams = {
@@ -32,6 +33,7 @@ export const List: FCClass<TList> = ({
   entries,
 }) => {
   const { t } = useTranslation();
+  const { openDrawer } = useDrawer();
 
   const noEntries = !entries?.length;
 
@@ -80,8 +82,8 @@ export const List: FCClass<TList> = ({
             iconClassName: 'bg-green-100 fill-green-200',
           },
         ]}
-        onFabItemClick={(value) => {
-          console.log('value', value);
+        onFabItemClick={() => {
+          openDrawer('sheet-1');
         }}
       />
     </div>

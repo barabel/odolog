@@ -5,39 +5,45 @@ import { LayoutIndex } from './layouts/index';
 import { AnalyticsPage } from '@/pages/analytics';
 import { SettingsPage } from '@/pages/settings';
 import { VehicleRedirect } from '@/entities/vehicle';
+import { DrawerProvider } from '@/shared/lib/drawer';
+import { registry } from '@/widgets/drawers';
 
 const App: FCClass = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          element={<LayoutIndex />}
-        >
+      <DrawerProvider
+        registry={registry}
+      >
+        <Routes>
           <Route
-            path={ROUTES.patterns.vehicle}
+            element={<LayoutIndex />}
           >
             <Route
-              index
-              element={<ListPage />}
-            />
+              path={ROUTES.patterns.vehicle}
+            >
+              <Route
+                index
+                element={<ListPage />}
+              />
+
+              <Route
+                path={ROUTES.patterns.analytics}
+                element={<AnalyticsPage />}
+              />
+            </Route>
 
             <Route
-              path={ROUTES.patterns.analytics}
-              element={<AnalyticsPage />}
+              path={ROUTES.patterns.settings}
+              element={<SettingsPage />}
             />
           </Route>
 
           <Route
-            path={ROUTES.patterns.settings}
-            element={<SettingsPage />}
+            path="/"
+            element={<VehicleRedirect />}
           />
-        </Route>
-
-        <Route
-          path="/"
-          element={<VehicleRedirect />}
-        />
-      </Routes>
+        </Routes>
+      </DrawerProvider>
     </BrowserRouter>
   );
 };
