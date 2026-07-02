@@ -14,11 +14,16 @@ npm run build
 # Lint
 npm run lint
 
-# Both (CI gate)
+# Unit tests (Vitest, watch: npm run test:watch)
+npm test
+
+# Lint + build + test (CI gate)
 npm run check
 ```
 
 All commands run from the monorepo root via npm workspaces. Node `>=22.16.0` (`.nvmrc` pins `v22.16.0`).
+
+**Tests:** Vitest (config `apps/frontend/vitest.config.ts`, `node` env, `@/` alias). Test files sit next to their module as `*.test.ts`. Use explicit imports (`import { describe, it, expect } from 'vitest'`) — `globals` is off, and `tsconfig.app.json` `types` is a closed array (`["vite/client"]`), so global test APIs would not typecheck. Only pure functions are tested (no jsdom/RTL yet).
 
 ## Architecture
 
