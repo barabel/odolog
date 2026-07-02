@@ -8,6 +8,12 @@ export const registry = {
   },
   'sheet-2': {
     component: Sheet2,
+    // Дефолт поведения шита в registry: свайп/тап-вне/Esc не закрывают —
+    // только программный closeDrawer() (кнопка). Разово переопределяется
+    // через openDrawer('sheet-2', props, { dismissible: true }).
+    options: {
+      dismissible: false,
+    },
   },
 } satisfies DrawerRegistry;
 

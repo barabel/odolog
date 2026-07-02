@@ -1,6 +1,7 @@
 import { useMemo, useReducer, type ReactNode } from 'react';
 import { genId } from '@/shared/lib/id';
 import { drawerStackReducer } from '../model/reducer';
+import { mergeDrawerOptions } from '../model/merge-options';
 import { DrawerActionsContext, DrawerStateContext } from '../model/context';
 import { DrawerStack } from './DrawerStack';
 import type { DrawerActions, DrawerRegistry } from '../types';
@@ -28,10 +29,7 @@ export const DrawerProvider = ({
             id: genId(),
             key,
             props,
-            options: {
-              ...entry?.options,
-              ...options,
-            },
+            options: mergeDrawerOptions(entry?.options, options),
             open: true,
           },
         });
