@@ -15,16 +15,20 @@ type TDrawerStack = {
 };
 
 type TDrawerFrame = {
-  frame: Frame;
+  // Хвост стека от текущей позиции: голова — этот фрейм, остальное — вложенные.
+  frames: Frame[];
+  depth: number;
   registry: DrawerRegistry;
   dispatch: Dispatch<DrawerStackAction>;
 };
 
 const DrawerFrame = ({
-  frame,
+  frames,
+  depth,
   registry,
   dispatch,
 }: TDrawerFrame) => {
+  const [frame, ...rest] = frames;
   const entry = registry[frame.key];
 
   // Локальный open стартует с false и на след. кадре повторяет frame.open —
@@ -41,6 +45,10 @@ const DrawerFrame = ({
 
   const Content = entry.component;
 
+  // Корневой фрейм → Root; вложенные → NestedRoot (читает контекст родителя,
+  // чтобы vaul масштабировал его при открытии вложенного).
+  const Root = depth === 0 ? Drawer.Root : Drawer.NestedRoot;
+
   const handleOpenChange = (next: boolean) => {
     if (!next) {
       // Жест/Esc/тап-вне → закрываем верхний тем же путём, что и closeDrawer.
@@ -56,7 +64,7 @@ const DrawerFrame = ({
   };
 
   return (
-    <Drawer.Root
+    <Root
       {...frame.options}
       open={open}
       onOpenChange={handleOpenChange}
@@ -88,9 +96,18 @@ const DrawerFrame = ({
           <Content
             {...(frame.props as object)}
           />
+
+          {rest.length > 0 && (
+            <DrawerFrame
+              frames={rest}
+              depth={depth + 1}
+              registry={registry}
+              dispatch={dispatch}
+            />
+          )}
         </Drawer.Content>
       </Drawer.Portal>
-    </Drawer.Root>
+    </Root>
   );
 };
 
@@ -100,18 +117,16 @@ export const DrawerStack = ({
 }: TDrawerStack) => {
   const stack = useContext(DrawerStateContext);
 
+  if (stack.length === 0) {
+    return null;
+  }
+
   return (
-    <>
-      {stack.map((frame) => {
-        return (
-          <DrawerFrame
-            key={frame.id}
-            frame={frame}
-            registry={registry}
-            dispatch={dispatch}
-          />
-        );
-      })}
-    </>
+    <DrawerFrame
+      frames={stack}
+      depth={0}
+      registry={registry}
+      dispatch={dispatch}
+    />
   );
 };

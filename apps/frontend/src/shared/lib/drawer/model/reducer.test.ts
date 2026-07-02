@@ -53,4 +53,13 @@ describe('drawerStackReducer', () => {
     expect(state.map(f => f.id)).toEqual(['a', 'b']);
     expect(state[0].key).toBe(state[1].key);
   });
+
+  it('closeAll flips open:false on every frame without removing any', () => {
+    const state = [frame('a'), frame('b'), frame('c')];
+
+    const next = drawerStackReducer(state, { type: 'closeAll' });
+
+    expect(next.map(f => f.id)).toEqual(['a', 'b', 'c']);
+    expect(next.every(f => f.open === false)).toBe(true);
+  });
 });

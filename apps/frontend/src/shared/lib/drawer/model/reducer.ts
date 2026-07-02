@@ -29,6 +29,14 @@ export const drawerStackReducer = (
       });
     }
 
+    case 'closeAll':
+      return state.map((frame) => {
+        return {
+          ...frame,
+          open: false,
+        };
+      });
+
     case 'remove':
       return state.filter((frame) => {
         return frame.id !== action.id;

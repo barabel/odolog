@@ -39,6 +39,9 @@ export const DrawerProvider = ({
       closeDrawer: () => {
         dispatch({ type: 'close' });
       },
+      closeAll: () => {
+        dispatch({ type: 'closeAll' });
+      },
     };
   }, [registry]);
 

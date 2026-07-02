@@ -18,6 +18,7 @@ export type Frame = {
 export type DrawerStackAction
   = | { type: 'open'; frame: Frame }
     | { type: 'close' }
+    | { type: 'closeAll' }
     | { type: 'remove'; id: string };
 
 // Начинка шита — обычный компонент, свободный от vaul.
@@ -38,4 +39,5 @@ export type DrawerKey = keyof DrawerRegistryMap;
 export type DrawerActions = {
   openDrawer: (key: DrawerKey, props?: unknown, options?: DrawerOptions) => void;
   closeDrawer: () => void;
+  closeAll: () => void;
 };

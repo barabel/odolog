@@ -1,9 +1,13 @@
 import type { DrawerRegistry } from '@/shared/lib/drawer';
 import { Sheet1 } from './sheet-1/ui';
+import { Sheet2 } from './sheet-2/ui';
 
 export const registry = {
   'sheet-1': {
     component: Sheet1,
+  },
+  'sheet-2': {
+    component: Sheet2,
   },
 } satisfies DrawerRegistry;
 
@@ -12,5 +16,6 @@ export const registry = {
 declare module '@/shared/lib/drawer' {
   interface DrawerRegistryMap {
     'sheet-1': true;
+    'sheet-2': true;
   }
 }
