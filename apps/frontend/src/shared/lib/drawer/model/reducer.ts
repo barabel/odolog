@@ -1,7 +1,5 @@
 import type { Frame, DrawerStackAction } from '../types';
 
-// Чистая механика стека drawer'ов: без React/vaul. Двухфазное закрытие —
-// `close` лишь ставит верхнему open:false, физическое удаление делает `remove`.
 export const drawerStackReducer = (
   state: Frame[],
   action: DrawerStackAction,
@@ -11,14 +9,16 @@ export const drawerStackReducer = (
       return [...state, action.frame];
 
     case 'close': {
-      if (state.length === 0) {
+      const lastOpenIndex = state.findLastIndex((frame) => {
+        return frame.open;
+      });
+
+      if (lastOpenIndex === -1) {
         return state;
       }
 
-      const lastIndex = state.length - 1;
-
       return state.map((frame, index) => {
-        if (index !== lastIndex) {
+        if (index !== lastOpenIndex) {
           return frame;
         }
 

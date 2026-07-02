@@ -1,4 +1,4 @@
-export { DrawerProvider } from './ui/DrawerProvider';
+export { DrawerProvider } from './ui/drawer-provider';
 export { useDrawer } from './model/use-drawer';
 export { drawerStackReducer } from './model/reducer';
 export type {
@@ -8,6 +8,9 @@ export type {
   DrawerKey,
   DrawerOptions,
   DrawerActions,
+  DrawerControls,
+  DrawerContentProps,
+  DrawerComponent,
   Frame,
   DrawerStackAction,
 } from './types';

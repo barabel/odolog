@@ -1,6 +1,6 @@
-// Начинка вложенного шита — обычный компонент без единого Drawer.*. Chrome
-// (хендл, кнопка закрытия) приходит из механизма.
-export const Sheet2 = () => {
+import type { DrawerComponent } from '@/shared/lib/drawer';
+
+export const Sheet2: DrawerComponent = ({ close }) => {
   return (
     <div
       className="flex flex-col gap-8 px-16"
@@ -16,6 +16,14 @@ export const Sheet2 = () => {
       >
         Вложенный тестовый шит — открыт поверх Sheet 1.
       </div>
+
+      <button
+        type="button"
+        className="mt-8 rounded-xl bg-blue-200 px-16 py-12 text-white-100 t2 cursor-pointer"
+        onClick={close}
+      >
+        Закрыть себя
+      </button>
     </div>
   );
 };

@@ -1,10 +1,7 @@
 import { useParams } from 'react-router';
-import { useDrawer } from '@/shared/lib/drawer';
+import { useDrawer, type DrawerComponent } from '@/shared/lib/drawer';
 
-// Начинка шита — обычный компонент без единого Drawer.*. Chrome (хендл, кнопка
-// закрытия) приходит из механизма. Доступен роутер-контекст (провайдер внутри
-// BrowserRouter).
-export const Sheet1 = () => {
+export const Sheet1: DrawerComponent = () => {
   const { vehicleId } = useParams();
   const { openDrawer } = useDrawer();
 

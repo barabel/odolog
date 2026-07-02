@@ -1,7 +1,6 @@
 import type { DialogProps } from 'vaul';
 import type { ComponentType } from 'react';
 
-// Подмножество опций vaul, задаваемых на шит (registry-дефолт + override через хук).
 export type DrawerOptions = Pick<
   DialogProps,
   'snapPoints' | 'dismissible' | 'direction' | 'modal'
@@ -21,9 +20,16 @@ export type DrawerStackAction
     | { type: 'closeAll' }
     | { type: 'remove'; id: string };
 
-// Начинка шита — обычный компонент, свободный от vaul.
-export type DrawerRegistryEntry = {
-  component: ComponentType<any>;
+export type DrawerControls = {
+  close: () => void;
+};
+
+export type DrawerContentProps<P = unknown> = P & DrawerControls;
+
+export type DrawerComponent<P = unknown> = ComponentType<DrawerContentProps<P>>;
+
+export type DrawerRegistryEntry<P = any> = {
+  component: DrawerComponent<P>;
   options?: DrawerOptions;
 };
 

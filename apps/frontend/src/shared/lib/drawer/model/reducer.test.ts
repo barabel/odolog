@@ -38,6 +38,23 @@ describe('drawerStackReducer', () => {
     expect(drawerStackReducer([], { type: 'close' })).toEqual([]);
   });
 
+  it('close targets the last still-open frame, skipping a closing top', () => {
+    const state = [frame('a'), frame('b', false)];
+
+    const next = drawerStackReducer(state, { type: 'close' });
+
+    expect(next[0].open).toBe(false);
+    expect(next[1].open).toBe(false);
+  });
+
+  it('close with all frames already closing is a no-op', () => {
+    const state = [frame('a', false), frame('b', false)];
+
+    const next = drawerStackReducer(state, { type: 'close' });
+
+    expect(next).toEqual(state);
+  });
+
   it('remove drops the frame with the matching id', () => {
     const state = [frame('a'), frame('b', false)];
 

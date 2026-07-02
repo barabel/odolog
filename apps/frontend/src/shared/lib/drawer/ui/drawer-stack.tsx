@@ -1,7 +1,5 @@
 import { useContext, useEffect, useState, type Dispatch } from 'react';
 import { Drawer } from 'vaul';
-import { Icon } from '@/shared/ui/icon';
-import { IconsArray } from '@/shared/enums/icons';
 import { DrawerStateContext } from '../model/context';
 import type {
   DrawerRegistry,
@@ -14,8 +12,10 @@ type TDrawerStack = {
   dispatch: Dispatch<DrawerStackAction>;
 };
 
+// Скорость закрытия анимации vaul - 500мс, тут с запасом
+const EXIT_ANIMATION_MS = 550 as const;
+
 type TDrawerFrame = {
-  // Хвост стека от текущей позиции: голова — этот фрейм, остальное — вложенные.
   frames: Frame[];
   depth: number;
   registry: DrawerRegistry;
@@ -29,15 +29,26 @@ const DrawerFrame = ({
   dispatch,
 }: TDrawerFrame) => {
   const [frame, ...rest] = frames;
+
   const entry = registry[frame.key];
 
-  // Локальный open стартует с false и на след. кадре повторяет frame.open —
-  // так vaul видит переход false→true и проигрывает выезд снизу (enter).
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setOpen(frame.open);
-  }, [frame.open]);
+
+    if (frame.open) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      dispatch({ type: 'remove', id: frame.id });
+    }, EXIT_ANIMATION_MS);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [frame.open, frame.id, dispatch]);
 
   if (!entry) {
     return null;
@@ -45,21 +56,11 @@ const DrawerFrame = ({
 
   const Content = entry.component;
 
-  // Корневой фрейм → Root; вложенные → NestedRoot (читает контекст родителя,
-  // чтобы vaul масштабировал его при открытии вложенного).
   const Root = depth === 0 ? Drawer.Root : Drawer.NestedRoot;
 
   const handleOpenChange = (next: boolean) => {
     if (!next) {
-      // Жест/Esc/тап-вне → закрываем верхний тем же путём, что и closeDrawer.
       dispatch({ type: 'close' });
-    }
-  };
-
-  const handleAnimationEnd = (isOpen: boolean) => {
-    if (!isOpen) {
-      // Анимация съезда доиграла — только теперь физически убираем фрейм.
-      dispatch({ type: 'remove', id: frame.id });
     }
   };
 
@@ -68,33 +69,22 @@ const DrawerFrame = ({
       {...frame.options}
       open={open}
       onOpenChange={handleOpenChange}
-      onAnimationEnd={handleAnimationEnd}
     >
       <Drawer.Portal>
         <Drawer.Overlay
-          className="fixed inset-0 z-40 bg-black-100/40"
+          className="z-30 fixed inset-0 bg-black-100/40"
         />
 
         <Drawer.Content
-          className="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-w-375 flex-col rounded-t-2xl bg-white-100 pb-16 outline-none"
+          className="z-40 fixed inset-x-0 bottom-0 mx-auto flex flex-col max-w-375 rounded-t-2xl bg-white-100 pb-16 outline-none"
         >
           <Drawer.Handle
             className="my-12"
           />
 
-          <button
-            type="button"
-            className="absolute right-16 top-16 flex h-32 w-32 items-center justify-center rounded-full bg-gray-100 cursor-pointer"
-            onClick={() => dispatch({ type: 'close' })}
-          >
-            <Icon
-              className="stroke-black-100 stroke-2 rotate-45"
-              icon={IconsArray.close}
-            />
-          </button>
-
           <Content
             {...(frame.props as object)}
+            close={() => dispatch({ type: 'close' })}
           />
 
           {rest.length > 0 && (

@@ -3,7 +3,7 @@ import { genId } from '@/shared/lib/id';
 import { drawerStackReducer } from '../model/reducer';
 import { mergeDrawerOptions } from '../model/merge-options';
 import { DrawerActionsContext, DrawerStateContext } from '../model/context';
-import { DrawerStack } from './DrawerStack';
+import { DrawerStack } from './drawer-stack';
 import type { DrawerActions, DrawerRegistry } from '../types';
 
 type TDrawerProvider = {
@@ -17,7 +17,6 @@ export const DrawerProvider = ({
 }: TDrawerProvider) => {
   const [stack, dispatch] = useReducer(drawerStackReducer, []);
 
-  // Стабильные ссылки — триггеры через useDrawer() не ре-рендерятся на стеке.
   const actions = useMemo<DrawerActions>(() => {
     return {
       openDrawer: (key, props, options) => {
