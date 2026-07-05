@@ -1,1 +1,1 @@
-export { List } from './ui';
+export { List } from './ui/list';

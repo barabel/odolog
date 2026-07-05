@@ -4,7 +4,7 @@ import type { TList } from '../types';
 import { FabButton, type TFabButton } from '@/shared/ui/fab-button';
 import { IconsArray } from '@/shared/enums/icons';
 import { useDrawer } from '@/shared/lib/drawer';
-import { ListStub } from './stub';
+import { ListStub } from './stub/stub';
 import { FAB_ITEM_VALUE } from '../const';
 
 type TGetEntryTextParams = {
