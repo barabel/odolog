@@ -2,11 +2,14 @@ import { IconsArray } from '@/shared/enums/icons';
 import { Icon } from '@/shared/ui/icon';
 import cx from 'classix';
 import { useTranslation } from 'react-i18next';
+import { useDrawerFuel, useDrawerOdometer } from '../../hooks/drawer';
 
 export const ListStub: FCClass = ({
   className,
 }) => {
   const { t } = useTranslation();
+  const { openDrawerOdometer } = useDrawerOdometer();
+  const { openDrawerFuel } = useDrawerFuel();
 
   return (
     <div
@@ -45,12 +48,14 @@ export const ListStub: FCClass = ({
       >
         <button
           className="grow-1 basis-1/2 h-40 px-16 border-1 border-white-200 rounded-xl"
+          onClick={openDrawerOdometer}
         >
           {t('list.stub.odometerButton')}
         </button>
 
         <button
           className="grow-1 basis-1/2 h-40 px-16 border-1 border-white-200 rounded-xl"
+          onClick={openDrawerFuel}
         >
           {t('list.stub.fuelButton')}
         </button>

@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import type { TList } from '../types';
 import { FabButton, type TFabButton } from '@/shared/ui/fab-button';
 import { IconsArray } from '@/shared/enums/icons';
-import { useDrawer } from '@/shared/lib/drawer';
 import { ListStub } from './stub/stub';
 import { FAB_ITEM_VALUE } from '../const';
+import { useDrawerFuel, useDrawerOdometer } from '../hooks/drawer';
 
 type TGetEntryTextParams = {
   t: (string: string) => string;
@@ -34,19 +34,20 @@ export const List: FCClass<TList> = ({
   entries,
 }) => {
   const { t } = useTranslation();
-  const { openDrawer } = useDrawer();
+  const { openDrawerOdometer } = useDrawerOdometer();
+  const { openDrawerFuel } = useDrawerFuel();
 
   const noEntries = !entries?.length;
 
   const handleFabItemClick = (itemValue: TFabButton['items'][0]['value']) => {
     switch (itemValue) {
       case FAB_ITEM_VALUE.FUEL:
-        openDrawer('fuel');
+        openDrawerFuel();
         break;
 
       case FAB_ITEM_VALUE.ODOMETER:
       default:
-        openDrawer('odometer');
+        openDrawerOdometer();
         break;
     }
   };

@@ -5,7 +5,9 @@ export const DrawerFuel: DrawerComponent = () => {
   const { t } = useTranslation();
 
   return (
-    <div>
+    <div
+      className="p-20"
+    >
       <div>
         {t('drawers.fuel.title')}
       </div>

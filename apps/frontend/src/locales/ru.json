@@ -25,7 +25,11 @@
   },
   "drawers": {
     "odometer": {
-      "title": "Одометр"
+      "title": "Одометр",
+      "inputValue": {
+        "label": "Показание одометра",
+        "unit": "км"
+      }
     },
     "fuel": {
       "title": "Заправка"

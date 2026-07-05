@@ -1,20 +1,12 @@
 import type { DrawerRegistry } from '@/shared/lib/drawer';
-import { Sheet1 } from './sheet-1/ui';
-import { Sheet2 } from './sheet-2/ui';
 import { DrawerOdometer } from './odometer';
 import { DrawerFuel } from './fuel';
 
 export const registry = {
-  'sheet-1': {
-    component: Sheet1,
-  },
-  'sheet-2': {
-    component: Sheet2,
-  },
-  'odometer': {
+  odometer: {
     component: DrawerOdometer,
   },
-  'fuel': {
+  fuel: {
     component: DrawerFuel,
   },
 } satisfies DrawerRegistry;
@@ -23,9 +15,7 @@ export const registry = {
 // опечатку на компиляции (dependency rule: widgets знает про shared).
 declare module '@/shared/lib/drawer' {
   interface DrawerRegistryMap {
-    'sheet-1': true;
-    'sheet-2': true;
-    'odometer': true;
-    'fuel': true;
+    odometer: true;
+    fuel: true;
   }
 }
