@@ -1,6 +1,8 @@
 import type { DrawerRegistry } from '@/shared/lib/drawer';
 import { Sheet1 } from './sheet-1/ui';
 import { Sheet2 } from './sheet-2/ui';
+import { DrawerOdometer } from './odometer';
+import { DrawerFuel } from './fuel';
 
 export const registry = {
   'sheet-1': {
@@ -8,6 +10,12 @@ export const registry = {
   },
   'sheet-2': {
     component: Sheet2,
+  },
+  'odometer': {
+    component: DrawerOdometer,
+  },
+  'fuel': {
+    component: DrawerFuel,
   },
 } satisfies DrawerRegistry;
 
@@ -17,5 +25,7 @@ declare module '@/shared/lib/drawer' {
   interface DrawerRegistryMap {
     'sheet-1': true;
     'sheet-2': true;
+    'odometer': true;
+    'fuel': true;
   }
 }

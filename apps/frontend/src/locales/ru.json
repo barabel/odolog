@@ -22,5 +22,13 @@
       "odometerButton": "Одометр",
       "fuelButton": "Заправка"
     }
+  },
+  "drawers": {
+    "odometer": {
+      "title": "Одометр"
+    },
+    "fuel": {
+      "title": "Топливо"
+    }
   }
 }
