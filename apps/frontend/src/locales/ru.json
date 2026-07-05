@@ -26,9 +26,15 @@
   "drawers": {
     "odometer": {
       "title": "Одометр",
+      "datePicker": {
+        "label": "Дата"
+      },
       "inputValue": {
         "label": "Показание одометра",
         "unit": "км"
+      },
+      "submit": {
+        "title": "Сохранить"
       }
     },
     "fuel": {
