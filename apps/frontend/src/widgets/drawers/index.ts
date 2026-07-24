@@ -1,1 +1,2 @@
-export { registry } from './registry';
+export { DrawerOdometer } from './odometer';
+export { DrawerFuel } from './fuel';

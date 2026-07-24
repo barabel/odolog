@@ -5,7 +5,6 @@ import { FabButton, type TFabButton } from '@/shared/ui/fab-button';
 import { IconsArray } from '@/shared/enums/icons';
 import { ListStub } from './stub/stub';
 import { FAB_ITEM_VALUE } from '../const';
-import { useDrawerFuel, useDrawerOdometer } from '../hooks/drawer';
 
 type TGetEntryTextParams = {
   t: (string: string) => string;
@@ -34,23 +33,11 @@ export const List: FCClass<TList> = ({
   entries,
 }) => {
   const { t } = useTranslation();
-  const { openDrawerOdometer } = useDrawerOdometer();
-  const { openDrawerFuel } = useDrawerFuel();
 
   const noEntries = !entries?.length;
 
-  const handleFabItemClick = (itemValue: TFabButton['items'][0]['value']) => {
-    switch (itemValue) {
-      case FAB_ITEM_VALUE.FUEL:
-        openDrawerFuel();
-        break;
-
-      case FAB_ITEM_VALUE.ODOMETER:
-      default:
-        openDrawerOdometer();
-        break;
-    }
-  };
+  // TODO: открывать bottom sheet после реализации своего механизма drawer
+  const handleFabItemClick = (_itemValue: TFabButton['items'][0]['value']) => {};
 
   return (
     <div

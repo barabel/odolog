@@ -1,7 +1,6 @@
-import type { DrawerComponent } from '@/shared/lib/drawer';
 import { useTranslation } from 'react-i18next';
 
-export const DrawerFuel: DrawerComponent = () => {
+export const DrawerFuel: FCClass = () => {
   const { t } = useTranslation();
 
   return (
