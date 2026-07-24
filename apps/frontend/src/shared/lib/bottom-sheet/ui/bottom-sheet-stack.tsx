@@ -1,7 +1,7 @@
 import cx from 'classix';
 import { AnimatePresence, motion, useReducedMotion, type Variants } from 'motion/react';
 
-import { closeSheet, removeSheetFrame, useSheetStore } from '../model/store';
+import { closeSheet, closeSheetById, removeSheetFrame, useSheetStore } from '../model/store';
 import type { TSheetRegistry } from '../types/registry';
 import type { TSheetKey } from '../types';
 
@@ -14,6 +14,7 @@ export const BottomSheetStack: FCClass<TBottomSheetStack> = ({ registry }) => {
   const shouldReduceMotion = useReducedMotion();
 
   const hasOpenFrame = frames.some(frame => frame.open);
+  const topOpenIndex = frames.findLastIndex(frame => frame.open);
 
   const overlayVariants: Variants = {
     hidden: {
@@ -54,8 +55,9 @@ export const BottomSheetStack: FCClass<TBottomSheetStack> = ({ registry }) => {
         )}
       </AnimatePresence>
 
-      {frames.map((frame) => {
+      {frames.map((frame, index) => {
         const SheetComponent = registry[frame.key as TSheetKey];
+        const isTopOpen = index === topOpenIndex;
 
         return (
           <AnimatePresence
@@ -64,7 +66,12 @@ export const BottomSheetStack: FCClass<TBottomSheetStack> = ({ registry }) => {
           >
             {frame.open && (
               <motion.div
-                className="fixed bottom-0 inset-x-0 z-40 flex justify-center"
+                className={cx(
+                  'fixed bottom-0 inset-x-0 flex justify-center',
+                  !isTopOpen && 'pointer-events-none',
+                )}
+                style={{ zIndex: 40 + index }}
+                aria-hidden={!isTopOpen}
                 variants={panelVariants}
                 initial="hidden"
                 animate="visible"
@@ -89,7 +96,7 @@ export const BottomSheetStack: FCClass<TBottomSheetStack> = ({ registry }) => {
                   >
                     <SheetComponent
                       {...(frame.props as object)}
-                      close={closeSheet}
+                      close={() => closeSheetById(frame.id)}
                     />
                   </div>
                 </div>

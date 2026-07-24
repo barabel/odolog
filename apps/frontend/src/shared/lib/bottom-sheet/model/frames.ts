@@ -5,7 +5,19 @@ export type TSheetFrame = {
   open: boolean;
 };
 
-export const pushFrame = (frames: TSheetFrame[], frame: TSheetFrame): TSheetFrame[] => {
+export const pushFrame = (
+  frames: TSheetFrame[],
+  frame: TSheetFrame,
+  allowDuplicate = false,
+): TSheetFrame[] => {
+  if (!allowDuplicate) {
+    const topOpenFrame = frames.findLast(existing => existing.open);
+
+    if (topOpenFrame?.key === frame.key) {
+      return frames;
+    }
+  }
+
   return [...frames, frame];
 };
 
@@ -25,6 +37,20 @@ export const closeTopFrame = (frames: TSheetFrame[]): TSheetFrame[] => {
   });
 };
 
+export const closeFrameById = (frames: TSheetFrame[], id: string): TSheetFrame[] => {
+  return frames.map((frame) => {
+    if (frame.id !== id) {
+      return frame;
+    }
+
+    return { ...frame, open: false };
+  });
+};
+
 export const removeFrame = (frames: TSheetFrame[], id: string): TSheetFrame[] => {
   return frames.filter(frame => frame.id !== id);
+};
+
+export const closeAllFrames = (_frames: TSheetFrame[]): TSheetFrame[] => {
+  return [];
 };
