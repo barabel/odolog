@@ -2,6 +2,7 @@ import { AnimatePresence, motion, type Variants } from 'motion/react';
 import { RemoveScroll } from 'react-remove-scroll';
 
 import { closeSheet, useSheetStore } from '../model/store';
+import { useHistoryDismiss } from '../model/use-history-dismiss';
 import { BottomSheetPanel } from './bottom-sheet-panel';
 import type { TSheetRegistry } from '../types/registry';
 
@@ -11,6 +12,8 @@ type TBottomSheetStack = {
 
 export const BottomSheetStack: FCClass<TBottomSheetStack> = ({ registry }) => {
   const frames = useSheetStore(state => state.frames);
+
+  useHistoryDismiss();
 
   const hasOpenFrame = frames.some(frame => frame.open);
   const topOpenIndex = frames.findLastIndex(frame => frame.open);
