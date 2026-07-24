@@ -1,6 +1,10 @@
 import { useTranslation } from 'react-i18next';
 
-export const BottomSheetFuel: FCClass = () => {
+type TBottomSheetFuel = {
+  close: () => void;
+};
+
+export const BottomSheetFuel: FCClass<TBottomSheetFuel> = () => {
   const { t } = useTranslation();
 
   return (

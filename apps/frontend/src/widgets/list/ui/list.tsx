@@ -5,6 +5,7 @@ import { FabButton, type TFabButton } from '@/shared/ui/fab-button';
 import { IconsArray } from '@/shared/enums/icons';
 import { ListStub } from './stub/stub';
 import { FAB_ITEM_VALUE } from '../const';
+import { openSheet } from '@/shared/lib/bottom-sheet';
 
 type TGetEntryTextParams = {
   t: (string: string) => string;
@@ -36,8 +37,16 @@ export const List: FCClass<TList> = ({
 
   const noEntries = !entries?.length;
 
-  // TODO: открывать bottom sheet после реализации своего механизма
-  const handleFabItemClick = (_itemValue: TFabButton['items'][0]['value']) => {};
+  const handleFabItemClick = (itemValue: TFabButton['items'][0]['value']) => {
+    if (itemValue === FAB_ITEM_VALUE.ODOMETER) {
+      openSheet('odometer');
+      return;
+    }
+
+    if (itemValue === FAB_ITEM_VALUE.FUEL) {
+      openSheet('fuel');
+    }
+  };
 
   return (
     <div

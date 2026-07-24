@@ -2,6 +2,7 @@ import { IconsArray } from '@/shared/enums/icons';
 import { Icon } from '@/shared/ui/icon';
 import cx from 'classix';
 import { useTranslation } from 'react-i18next';
+import { openSheet } from '@/shared/lib/bottom-sheet';
 
 export const ListStub: FCClass = ({
   className,
@@ -40,18 +41,19 @@ export const ListStub: FCClass = ({
         </div>
       </div>
 
-      {/* TODO: открывать bottom sheet после реализации своего механизма */}
       <div
         className="flex items-center gap-10"
       >
         <button
           className="grow-1 basis-1/2 h-40 px-16 border-1 border-white-200 rounded-xl"
+          onClick={() => openSheet('odometer')}
         >
           {t('list.stub.odometerButton')}
         </button>
 
         <button
           className="grow-1 basis-1/2 h-40 px-16 border-1 border-white-200 rounded-xl"
+          onClick={() => openSheet('fuel')}
         >
           {t('list.stub.fuelButton')}
         </button>
