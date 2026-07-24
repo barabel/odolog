@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-export const DrawerFuel: FCClass = () => {
+export const BottomSheetFuel: FCClass = () => {
   const { t } = useTranslation();
 
   return (
@@ -8,7 +8,7 @@ export const DrawerFuel: FCClass = () => {
       className="p-20"
     >
       <div>
-        {t('drawers.fuel.title')}
+        {t('bottomSheets.fuel.title')}
       </div>
     </div>
   );

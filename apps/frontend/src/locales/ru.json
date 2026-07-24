@@ -23,7 +23,7 @@
       "fuelButton": "Заправка"
     }
   },
-  "drawers": {
+  "bottomSheets": {
     "odometer": {
       "title": "Одометр",
       "datePicker": {

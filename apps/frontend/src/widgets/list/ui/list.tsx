@@ -36,7 +36,7 @@ export const List: FCClass<TList> = ({
 
   const noEntries = !entries?.length;
 
-  // TODO: открывать bottom sheet после реализации своего механизма drawer
+  // TODO: открывать bottom sheet после реализации своего механизма
   const handleFabItemClick = (_itemValue: TFabButton['items'][0]['value']) => {};
 
   return (

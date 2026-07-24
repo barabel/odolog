@@ -40,7 +40,7 @@ export const ListStub: FCClass = ({
         </div>
       </div>
 
-      {/* TODO: открывать bottom sheet после реализации своего механизма drawer */}
+      {/* TODO: открывать bottom sheet после реализации своего механизма */}
       <div
         className="flex items-center gap-10"
       >

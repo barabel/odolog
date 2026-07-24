@@ -2,7 +2,7 @@ import { DatePicker } from '@/shared/ui/date-picker';
 import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
 
-export const DrawerOdometer: FCClass = () => {
+export const BottomSheetOdometer: FCClass = () => {
   const { t } = useTranslation();
 
   const {
@@ -27,7 +27,7 @@ export const DrawerOdometer: FCClass = () => {
       <div
         className="mb-20"
       >
-        {t('drawers.odometer.title')}
+        {t('bottomSheets.odometer.title')}
       </div>
 
       <form
@@ -38,7 +38,7 @@ export const DrawerOdometer: FCClass = () => {
           className="flex flex-col gap-4 w-full"
         >
           <div>
-            {t('drawers.odometer.datePicker.label')}
+            {t('bottomSheets.odometer.datePicker.label')}
           </div>
 
           <Controller
@@ -62,7 +62,7 @@ export const DrawerOdometer: FCClass = () => {
           className="flex flex-col gap-4 w-full"
         >
           <div>
-            {t('drawers.odometer.inputValue.label')}
+            {t('bottomSheets.odometer.inputValue.label')}
           </div>
 
           <div
@@ -76,7 +76,7 @@ export const DrawerOdometer: FCClass = () => {
             <div
               className="absolute top-1/2 right-20 -translate-y-1/2"
             >
-              {t('drawers.odometer.inputValue.unit')}
+              {t('bottomSheets.odometer.inputValue.unit')}
             </div>
           </div>
         </label>
@@ -84,7 +84,7 @@ export const DrawerOdometer: FCClass = () => {
         <button
           className="w-full h-40 border-1 border-black-100 rounded-xl"
         >
-          {t('drawers.odometer.submit.title')}
+          {t('bottomSheets.odometer.submit.title')}
         </button>
       </form>
     </div>
