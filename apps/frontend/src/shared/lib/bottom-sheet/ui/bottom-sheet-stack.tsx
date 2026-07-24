@@ -1,4 +1,5 @@
 import { AnimatePresence, motion, type Variants } from 'motion/react';
+import { RemoveScroll } from 'react-remove-scroll';
 
 import { closeSheet, useSheetStore } from '../model/store';
 import { BottomSheetPanel } from './bottom-sheet-panel';
@@ -26,7 +27,7 @@ export const BottomSheetStack: FCClass<TBottomSheetStack> = ({ registry }) => {
   };
 
   return (
-    <>
+    <RemoveScroll enabled={frames.length > 0}>
       <AnimatePresence>
         {hasOpenFrame && (
           <motion.div
@@ -51,6 +52,6 @@ export const BottomSheetStack: FCClass<TBottomSheetStack> = ({ registry }) => {
           />
         );
       })}
-    </>
+    </RemoveScroll>
   );
 };
