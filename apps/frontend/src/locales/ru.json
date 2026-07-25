@@ -42,7 +42,9 @@
     },
     "dateTimePicker": {
       "time": {
-        "label": "Время"
+        "label": "Время",
+        "title": "Время",
+        "confirm": "Сохранить"
       },
       "submit": {
         "title": "Готово"
