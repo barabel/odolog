@@ -1,10 +1,11 @@
 import cx from 'classix';
 import { useTranslation } from 'react-i18next';
 import type { TList } from '../types';
-import { FabButton } from '@/shared/ui/fab-button';
+import { FabButton, type TFabButton } from '@/shared/ui/fab-button';
 import { IconsArray } from '@/shared/enums/icons';
-import { useDrawer } from '@/shared/lib/drawer';
-import { ListStub } from './stub';
+import { ListStub } from './stub/stub';
+import { FAB_ITEM_VALUE } from '../const';
+import { usePopups } from '@/shared/lib/popups';
 
 type TGetEntryTextParams = {
   t: (string: string) => string;
@@ -33,9 +34,20 @@ export const List: FCClass<TList> = ({
   entries,
 }) => {
   const { t } = useTranslation();
-  const { openDrawer } = useDrawer();
+  const { openPopup } = usePopups();
 
   const noEntries = !entries?.length;
+
+  const handleFabItemClick = (itemValue: TFabButton['items'][0]['value']) => {
+    if (itemValue === FAB_ITEM_VALUE.ODOMETER) {
+      openPopup('odometer');
+      return;
+    }
+
+    if (itemValue === FAB_ITEM_VALUE.FUEL) {
+      openPopup('fuel');
+    }
+  };
 
   return (
     <div
@@ -71,20 +83,18 @@ export const List: FCClass<TList> = ({
         items={[
           {
             title: t('list.fab.odometer'),
-            value: '1',
+            value: FAB_ITEM_VALUE.ODOMETER,
             icon: IconsArray.odometer,
             iconClassName: 'bg-blue-100 fill-blue-200',
           },
           {
             title: t('list.fab.fuel'),
-            value: '2',
+            value: FAB_ITEM_VALUE.FUEL,
             icon: IconsArray.fuel,
             iconClassName: 'bg-green-100 fill-green-200',
           },
         ]}
-        onFabItemClick={() => {
-          openDrawer('sheet-1');
-        }}
+        onFabItemClick={handleFabItemClick}
       />
     </div>
   );

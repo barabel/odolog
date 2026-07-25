@@ -2,11 +2,13 @@ import { IconsArray } from '@/shared/enums/icons';
 import { Icon } from '@/shared/ui/icon';
 import cx from 'classix';
 import { useTranslation } from 'react-i18next';
+import { usePopups } from '@/shared/lib/popups';
 
 export const ListStub: FCClass = ({
   className,
 }) => {
   const { t } = useTranslation();
+  const { openPopup } = usePopups();
 
   return (
     <div
@@ -45,12 +47,14 @@ export const ListStub: FCClass = ({
       >
         <button
           className="grow-1 basis-1/2 h-40 px-16 border-1 border-white-200 rounded-xl"
+          onClick={() => openPopup('odometer')}
         >
           {t('list.stub.odometerButton')}
         </button>
 
         <button
           className="grow-1 basis-1/2 h-40 px-16 border-1 border-white-200 rounded-xl"
+          onClick={() => openPopup('fuel')}
         >
           {t('list.stub.fuelButton')}
         </button>

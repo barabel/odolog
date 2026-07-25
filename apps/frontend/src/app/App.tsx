@@ -5,15 +5,12 @@ import { LayoutIndex } from './layouts/index';
 import { AnalyticsPage } from '@/pages/analytics';
 import { SettingsPage } from '@/pages/settings';
 import { VehicleRedirect } from '@/entities/vehicle';
-import { DrawerProvider } from '@/shared/lib/drawer';
-import { registry } from '@/widgets/drawers';
+import { PopupsProvider } from './providers/popups';
 
 const App: FCClass = () => {
   return (
     <BrowserRouter>
-      <DrawerProvider
-        registry={registry}
-      >
+      <PopupsProvider>
         <Routes>
           <Route
             element={<LayoutIndex />}
@@ -43,7 +40,7 @@ const App: FCClass = () => {
             element={<VehicleRedirect />}
           />
         </Routes>
-      </DrawerProvider>
+      </PopupsProvider>
     </BrowserRouter>
   );
 };
