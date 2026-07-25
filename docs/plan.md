@@ -170,14 +170,14 @@ src/
   - [x] Карточка "Начните вести учёт" с подписью
   - [x] Кнопки "Одометр" / "Заправка" открывают соответствующие попапы
 
-- [ ] **Попапы (`@idem.agency/popups-engine`, замена собственного bottom-sheet механизма)** — решения в `docs/adr/0003-popups-instead-of-bottom-sheets.md`
-  - [ ] `shared/lib/bottom-sheet` удалён целиком (стор, логика стека с тестами, жесты, `useHistoryDismiss`, `ui/*`)
-  - [ ] `app/providers/popups`: `PopupsEngineProvider` + `PopupsEngineRoot` в одном компоненте, оборачивает `<Routes>`
-  - [ ] Кастомный wrapper: `RemoveScroll` + `motionVariants` либы + закрытие по клику вне; CSS либы не импортируется
-  - [ ] `shared/lib/popups`: типизированный фасад `usePopups()` → `openPopup(key, props)`, `PopupsMap` через declaration merging
-  - [ ] `widgets/bottom-sheets` → `widgets/popups` (eager-реестр), компоненты `PopupOdometer` / `PopupFuel`, проп `close` → `closePopup`
-  - [ ] FAB и кнопки стаба открывают попапы; тап по затемнению и Escape закрывают
-  - [ ] Скролл фона заблокирован, ключи i18n `bottomSheets.*` → `popups.*`
+- [x] **Попапы (`@idem.agency/popups-engine`, замена собственного bottom-sheet механизма)** — решения в `docs/adr/0003-popups-instead-of-bottom-sheets.md`
+  - [x] `shared/lib/bottom-sheet` удалён целиком (стор, логика стека с тестами, жесты, `useHistoryDismiss`, `ui/*`)
+  - [x] `app/providers/popups`: `PopupsEngineProvider` + `PopupsEngineRoot` в одном компоненте, оборачивает `<Routes>`
+  - [x] Кастомный wrapper: `RemoveScroll` + `motionVariants` либы + закрытие по клику вне; CSS либы не импортируется
+  - [x] `shared/lib/popups`: типизированный фасад `usePopups()` → `openPopup(key, props)`, `PopupsMap` через declaration merging
+  - [x] `widgets/bottom-sheets` → `widgets/popups` (eager-реестр), компоненты `PopupOdometer` / `PopupFuel`, проп `close` → `closePopup`
+  - [x] FAB и кнопки стаба открывают попапы; тап по затемнению и Escape закрывают
+  - [x] Скролл фона заблокирован, ключи i18n `bottomSheets.*` → `popups.*`
   - [ ] Свой date-picker (колёса-барабаны): либо починить текущий (разобраться, почему барабаны не скроллятся), либо реализовать с нуля
   - Не делаем осознанно: аппаратная «Назад», закрытие по смене роута, дедуп дабл-тапа, тесты стека
   - Смотрим эмпирически: поведение при клавиатуре (`interactive-widget` в метатеге), наложение затемнений при стеке
