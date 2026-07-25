@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 type TPopupFuel = {
-  close: () => void;
+  closePopup: () => void;
 };
 
 export const PopupFuel: FCClass<TPopupFuel> = () => {

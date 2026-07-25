@@ -5,15 +5,16 @@ import { LayoutIndex } from './layouts/index';
 import { AnalyticsPage } from '@/pages/analytics';
 import { SettingsPage } from '@/pages/settings';
 import { VehicleRedirect } from '@/entities/vehicle';
-import { BottomSheetStack } from '@/shared/lib/bottom-sheet';
-import { sheetRegistry } from '@/widgets/popups/registry';
+import { BottomSheetStack, type TSheetRegistry } from '@/shared/lib/bottom-sheet';
 import { PopupsProvider } from './providers/popups';
+
+const emptySheetRegistry: TSheetRegistry = {};
 
 const App: FCClass = () => {
   return (
     <BrowserRouter>
       <BottomSheetStack
-        registry={sheetRegistry}
+        registry={emptySheetRegistry}
       />
 
       <PopupsProvider>

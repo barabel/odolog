@@ -1,4 +1,5 @@
 import cx from 'classix';
+import type { ComponentType } from 'react';
 import { AnimatePresence, motion, useDragControls, useReducedMotion, type PanInfo, type Variants } from 'motion/react';
 
 import { shouldDismissSheet } from '../model/gestures';
@@ -40,7 +41,7 @@ export const BottomSheetPanel: FCClass<TBottomSheetPanel> = ({ frame, index, isT
   const shouldReduceMotion = useReducedMotion();
   const dragControls = useDragControls();
 
-  const SheetComponent = registry[frame.key as TSheetKey];
+  const SheetComponent = registry[frame.key as TSheetKey] as ComponentType<{ close: () => void } & Record<string, unknown>>;
 
   const panelVariants: Variants = {
     hidden: {

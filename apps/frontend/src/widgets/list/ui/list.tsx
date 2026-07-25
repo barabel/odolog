@@ -5,7 +5,6 @@ import { FabButton, type TFabButton } from '@/shared/ui/fab-button';
 import { IconsArray } from '@/shared/enums/icons';
 import { ListStub } from './stub/stub';
 import { FAB_ITEM_VALUE } from '../const';
-import { openSheet } from '@/shared/lib/bottom-sheet';
 import { usePopups } from '@/shared/lib/popups';
 
 type TGetEntryTextParams = {
@@ -46,7 +45,7 @@ export const List: FCClass<TList> = ({
     }
 
     if (itemValue === FAB_ITEM_VALUE.FUEL) {
-      openSheet('fuel');
+      openPopup('fuel');
     }
   };
 
