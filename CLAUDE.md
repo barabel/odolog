@@ -40,7 +40,7 @@ src/
   pages/      # list, analytics, settings
   widgets/    # composite blocks (tabbar, list)
   features/   # add-odometer-entry, add-fuel-entry, sync (planned)
-  entities/   # vehicle (active-vehicle store); odometer-entry, fuel-entry (planned)
+  entities/   # vehicle (active-vehicle store); entry (planned)
   shared/
     lib/      # db/ (Dexie/IndexedDB), id.ts (nanoid), popups/ (facade), date/ (formatting)
     ui/       # reusable components (Icon, date-time-input, calendar, time-field, ...)
@@ -60,7 +60,7 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 
 **Active Vehicle (state):** Zustand store `useActiveVehicleStore` (`entities/vehicle/store`), persisted to localStorage (`odolog:active-vehicle`), holds `activeVehicleId`. **URL is the source of truth** — all resolve/validate/sync/redirect logic lives in one hook `useVehicleRouting()` (`entities/vehicle`), over the pure function `resolveVehicleRouting({ paramVehicleId, vehicles, activeVehicleId }) → VehicleRoutingState` (`loading | redirect | ready`). The hook does a single `useLiveQuery(db.vehicles.toArray())` and is the **only** store writer (one idempotent sync effect: writes `activeVehicleId` only in `ready` when it differs). Consumers render the directive: `LayoutIndex` (`switch (status)`) and `VehicleRedirect` (root `/`). Active Vehicle is device-local — not part of the sync protocol. See `docs/adr/0001-active-vehicle-url-vs-store.md`. **Zustand** (`zustand` v5) is the app's client-state library.
 
-**Data layer:** Single Dexie DB `odolog` (`shared/lib/db`), v1 with 3 tables: `vehicles`, `odometerEntries`, `fuelEntries`. Field names are **camelCase** (`vehicleId`, `updatedAt`, `deletedAt`). Soft delete via `deletedAt: number | null` (UI filters `deletedAt === null`). On first run the `populate` hook seeds one default vehicle (waits for i18n init). Live data via `useLiveQuery` (dexie-react-hooks). IDs: `genId(size?)` (nanoid, 21 default) for entries, `genVehicleId()` (6-char URL-safe custom alphabet) for vehicles — both in `shared/lib/id.ts`.
+**Data layer:** Single Dexie DB `odolog` (`shared/lib/db`), v1 with 2 tables: `vehicles` and `entries` (index `id, vehicleId, type, measuredAt, synced, deletedAt`). `entries` is a **discriminated union on `type`** (`'odometer'` | `'fuel'`) — one timeline for both kinds, ordered by `measuredAt` (user-supplied) with `createdAt` as tie-breaker; see `docs/adr/0002-single-entry-table-and-measured-at.md`. Types live in `@odolog/shared` (`TEntries`, `TOdometerEntry`, `TFuelEntry`). Field names are **camelCase** (`vehicleId`, `updatedAt`, `deletedAt`). Soft delete via `deletedAt: number | null` (UI filters `deletedAt === null`). On first run the `populate` hook seeds one default vehicle (waits for i18n init). Live data via `useLiveQuery` (dexie-react-hooks). IDs: `genId(size?)` (nanoid, 21 default) for entries, `genVehicleId()` (6-char URL-safe custom alphabet) for vehicles — both in `shared/lib/id.ts`.
 
 **Styling:** Tailwind CSS 4 via `@tailwindcss/vite` plugin. SCSS доступен для edge-cases; кастомные миксины/функции в `assets/styles/lib/`.
 
@@ -89,12 +89,14 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 
 ## Current state (Phase 1 in progress)
 
-- DB schema (3 tables) + default vehicle: done
+- DB schema (`vehicles` + single `entries` table) + default vehicle: done
 - Routing (vehicle-scoped list/analytics + global settings) + tabbar + active-vehicle store: done (Analytics, Settings are stubs)
-- List widget (`widgets/list`): in progress
-- Popup mechanism (`popups-engine`): in progress (migration from own bottom-sheet mechanism)
-- Date/time picker (calendar + clock face): decided, not yet implemented (ADR 0004) — replaces the `react-mobile-picker` wheel in `shared/ui/date-picker`
-- Forms (odometer/fuel popups), FAB speed-dial: not yet implemented
+- Popup mechanism (`popups-engine`): done — own bottom-sheet mechanism removed entirely
+- FAB speed-dial + empty-state stub: done
+- Date/time picker (calendar + clock face, ADR 0004): done — `shared/lib/date`, `shared/ui/calendar`, `shared/ui/time-field`, `widgets/popups/date-time-picker`; the `react-mobile-picker` wheel is gone
+- Entry list (`widgets/list`): renders header + stub + FAB only — the list of entries itself is not implemented
+- Forms: odometer popup has a working date/time field but `onSubmit` is a stub (nothing is written to Dexie); fuel popup is a title only
+- Not started: odometer delta, entry deletion, fuel form
 
 Phase tracking and full UI spec live in `docs/plan.md`. Architectural decisions in `docs/adr/`.
 
