@@ -2,11 +2,7 @@ import { DatePicker } from '@/shared/ui/date-picker';
 import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
 
-type TPopupOdometer = {
-  closePopup: () => void;
-};
-
-export const PopupOdometer: FCClass<TPopupOdometer> = ({
+export const PopupOdometer: FCPopup = ({
   closePopup,
 }) => {
   const { t } = useTranslation();

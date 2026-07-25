@@ -9,4 +9,6 @@ type FCClass<P = object> = React.FC<P & React.PropsWithChildren & {
   className?: string;
 }>;
 
+type FCPopup<P = object> = FCClass<{ closePopup: () => void } & P>;
+
 type GetElementTypeFromArray<T> = T extends (infer U)[] ? U : never;
