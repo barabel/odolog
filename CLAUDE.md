@@ -73,7 +73,7 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 
 **Icons:** Custom Vite plugin (`apps/frontend/plugins/vite-plugin-icon-sprite.ts`) compiles SVGs from `src/assets/svg/` into `/public/sprite.svg` and auto-generates `shared/enums/icons/index.ts` enum on dev server start and on file changes. To add an icon: drop SVG into `src/assets/svg/`, the enum and sprite regenerate automatically. Icon component renders `<svg><use href="/sprite.svg#name">`.
 
-**Bottom sheets:** собственный механизм (`vaul` удалён — ломался с экранной клавиатурой). Термин — **bottom sheet**, не drawer (drawer в Material Design — боковая панель). Механизм: `shared/lib/bottom-sheet` — zustand-синглтон со стеком фреймов + чистая логика стека отдельными функциями (покрыта тестами) + обёртка на `motion` (`AnimatePresence`, удаление фрейма по `onExitComplete`). API: `openSheet(key, props, { allowDuplicate })`, `closeSheet()`, зарегистрированный компонент получает `close` в пропах (закрывает **свой** фрейм по id). Реестр «ключ → компонент» — `widgets/bottom-sheets/registry.ts`, типы пропов попадают в `shared` через declaration merging (`SheetRegistryMap`). Стек монтируется в `App.tsx` рядом с `<Routes>`; панель `fixed bottom-0`, внутри `max-w-375 mx-auto`, высота по контенту до `90svh`. Драг — за всю панель, кроме скроллируемых контейнеров с `scrollTop > 0` и зон `[data-sheet-no-drag]`. Скролл фона — `react-remove-scroll`. Аппаратная «Назад» закрывает верхний шит (`useHistoryDismiss`, история), смена роута закрывает весь стек. См. `docs/adr/0003-own-bottom-sheet-mechanism.md`.
+**Popups:** модальные формы открываются **центрированным попапом** на `@idem.agency/popups-engine` (bottom sheets убраны совсем — `vaul` ломался с клавиатурой, собственный механизм глючил драгом в webview; термин «шит»/«drawer» в проекте не используется). Подключение — одной точкой: `app/providers/popups` (`PopupsEngineProvider` + `PopupsEngineRoot`) оборачивает `<Routes>` в `App.tsx`. Wrapper кастомный (`app/providers/popups/ui/wrapper.tsx`): `RemoveScroll` (декларативный лок скролла фона; `lockBodyScroll`/`enableBodyScroll` либе не передаются) + `motion.div` с `motionVariants` из либы + закрытие по клику вне. Реестр «ключ → компонент» — `widgets/popups` (eager). API — типизированный фасад `shared/lib/popups`: хук `usePopups()` → `openPopup(key, props)` / `closePopup()`, типы пропов попадают в `shared` через declaration merging (`PopupsMap`). Зарегистрированный компонент получает `closePopup` в пропах. Аппаратной «Назад», закрытия по смене роута и дедупа дабл-тапа **нет** — осознанно. См. `docs/adr/0003-popups-instead-of-bottom-sheets.md`.
 
 **i18n:** `i18next` + `react-i18next`. Initialized before app render (`src/i18n/`); Russian only (`src/locales/ru.json`). Used in DB `populate` hook for default vehicle name.
 
@@ -88,7 +88,8 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 - DB schema (3 tables) + default vehicle: done
 - Routing (vehicle-scoped list/analytics + global settings) + tabbar + active-vehicle store: done (Analytics, Settings are stubs)
 - List widget (`widgets/list`): in progress
-- Forms (odometer/fuel bottom sheets), FAB speed-dial: not yet implemented
+- Popup mechanism (`popups-engine`): in progress (migration from own bottom-sheet mechanism)
+- Forms (odometer/fuel popups), FAB speed-dial: not yet implemented
 
 Phase tracking and full UI spec live in `docs/plan.md`. Architectural decisions in `docs/adr/`.
 
