@@ -6,7 +6,7 @@ import { AnalyticsPage } from '@/pages/analytics';
 import { SettingsPage } from '@/pages/settings';
 import { VehicleRedirect } from '@/entities/vehicle';
 import { BottomSheetStack } from '@/shared/lib/bottom-sheet';
-import { sheetRegistry } from '@/widgets/bottom-sheets/registry';
+import { sheetRegistry } from '@/widgets/popups/registry';
 
 const App: FCClass = () => {
   return (

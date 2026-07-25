@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
 
-type TBottomSheetFuel = {
+type TPopupFuel = {
   close: () => void;
 };
 
-export const BottomSheetFuel: FCClass<TBottomSheetFuel> = () => {
+export const PopupFuel: FCClass<TPopupFuel> = () => {
   const { t } = useTranslation();
 
   return (
@@ -12,7 +12,7 @@ export const BottomSheetFuel: FCClass<TBottomSheetFuel> = () => {
       className="p-20"
     >
       <div>
-        {t('bottomSheets.fuel.title')}
+        {t('popups.fuel.title')}
       </div>
     </div>
   );

@@ -2,11 +2,11 @@ import { DatePicker } from '@/shared/ui/date-picker';
 import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
 
-type TBottomSheetOdometer = {
+type TPopupOdometer = {
   close: () => void;
 };
 
-export const BottomSheetOdometer: FCClass<TBottomSheetOdometer> = ({
+export const PopupOdometer: FCClass<TPopupOdometer> = ({
   close,
 }) => {
   const { t } = useTranslation();
@@ -34,7 +34,7 @@ export const BottomSheetOdometer: FCClass<TBottomSheetOdometer> = ({
       <div
         className="mb-20"
       >
-        {t('bottomSheets.odometer.title')}
+        {t('popups.odometer.title')}
       </div>
 
       <form
@@ -45,7 +45,7 @@ export const BottomSheetOdometer: FCClass<TBottomSheetOdometer> = ({
           className="flex flex-col gap-4 w-full"
         >
           <div>
-            {t('bottomSheets.odometer.datePicker.label')}
+            {t('popups.odometer.datePicker.label')}
           </div>
 
           <Controller
@@ -69,7 +69,7 @@ export const BottomSheetOdometer: FCClass<TBottomSheetOdometer> = ({
           className="flex flex-col gap-4 w-full"
         >
           <div>
-            {t('bottomSheets.odometer.inputValue.label')}
+            {t('popups.odometer.inputValue.label')}
           </div>
 
           <div
@@ -83,7 +83,7 @@ export const BottomSheetOdometer: FCClass<TBottomSheetOdometer> = ({
             <div
               className="absolute top-1/2 right-20 -translate-y-1/2"
             >
-              {t('bottomSheets.odometer.inputValue.unit')}
+              {t('popups.odometer.inputValue.unit')}
             </div>
           </div>
         </label>
@@ -91,7 +91,7 @@ export const BottomSheetOdometer: FCClass<TBottomSheetOdometer> = ({
         <button
           className="w-full h-40 border-1 border-black-100 rounded-xl"
         >
-          {t('bottomSheets.odometer.submit.title')}
+          {t('popups.odometer.submit.title')}
         </button>
       </form>
     </div>

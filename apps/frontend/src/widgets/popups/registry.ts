@@ -1,6 +1,6 @@
 import type { TSheetRegistry } from '@/shared/lib/bottom-sheet';
-import { BottomSheetFuel } from './fuel';
-import { BottomSheetOdometer } from './odometer';
+import { PopupFuel } from './fuel';
+import { PopupOdometer } from './odometer';
 
 declare module '@/shared/lib/bottom-sheet' {
   interface SheetRegistryMap {
@@ -10,6 +10,6 @@ declare module '@/shared/lib/bottom-sheet' {
 }
 
 export const sheetRegistry = {
-  odometer: BottomSheetOdometer,
-  fuel: BottomSheetFuel,
+  odometer: PopupOdometer,
+  fuel: PopupFuel,
 } satisfies TSheetRegistry;
