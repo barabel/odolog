@@ -30,7 +30,7 @@ export const TimeField: FCClass<TTimeField> = ({
         incrementMinutes: 1,
       },
       ui: {
-        backdrop: false,
+        backdrop: true,
         enableScrollbar: true,
         enableSwitchIcon: true,
       },

@@ -32,7 +32,7 @@ export const Calendar: FCClass<TCalendar> = ({
         onSelect(date);
       }}
       locale={locale}
-      captionLayout="dropdown"
+      captionLayout="dropdown-years"
       startMonth={START_MONTH}
       endMonth={END_MONTH}
     />
