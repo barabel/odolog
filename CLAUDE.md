@@ -42,8 +42,8 @@ src/
   features/   # add-odometer-entry, add-fuel-entry, sync (planned)
   entities/   # vehicle (active-vehicle store); odometer-entry, fuel-entry (planned)
   shared/
-    lib/      # db/ (Dexie/IndexedDB), id.ts (nanoid)
-    ui/       # reusable components (Icon, ...)
+    lib/      # db/ (Dexie/IndexedDB), id.ts (nanoid), popups/ (facade), date/ (formatting)
+    ui/       # reusable components (Icon, date-time-input, calendar, time-field, ...)
     config/   # routes.ts
     enums/    # auto-generated icons enum
     helpers/  # array/util helpers
@@ -75,6 +75,10 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 
 **Popups:** модальные формы открываются **центрированным попапом** на `@idem.agency/popups-engine` (bottom sheets убраны совсем — `vaul` ломался с клавиатурой, собственный механизм глючил драгом в webview; термин «шит»/«drawer» в проекте не используется). Подключение — одной точкой: `app/providers/popups` (`PopupsEngineProvider` + `PopupsEngineRoot`) оборачивает `<Routes>` в `App.tsx`. Wrapper кастомный (`app/providers/popups/ui/wrapper.tsx`): `RemoveScroll` (декларативный лок скролла фона; `lockBodyScroll`/`enableBodyScroll` либе не передаются) + `motion.div` с `motionVariants` из либы + закрытие по клику вне. Реестр «ключ → компонент» — `widgets/popups` (eager). API — типизированный фасад `shared/lib/popups`: хук `usePopups()` → `openPopup(key, props)` / `closePopup()`, типы пропов попадают в `shared` через declaration merging (`PopupsMap`). Зарегистрированный компонент получает `closePopup` в пропах. Аппаратной «Назад», закрытия по смене роута и дедупа дабл-тапа **нет** — осознанно. См. `docs/adr/0003-popups-instead-of-bottom-sheets.md`.
 
+**Сторонние либы — только через собственную точку входа.** Каждая внешняя библиотека оборачивается в свой модуль-адаптер (`shared/ui/*` для компонентов, `shared/lib/*` для фасадов), и остальной код ходит только через него — прямых импортов либы по проекту нет. Цель — заменить или дополнить либу правкой одного файла. Правило действует и при единственном потребителе: «не абстрагируй под одно использование» здесь не применяется, потому что изолируется не наша логика, а чужой рантайм. Так сделаны `shared/lib/popups` над `@idem.agency/popups-engine`, `shared/ui/calendar` над `react-day-picker`, `shared/ui/time-field` над `timepicker-ui`.
+
+**Дата и время:** ввод `measuredAt` — поле `shared/ui/date-time-input` → попап `widgets/popups/date-time-picker` (календарь + строка времени + «Готово», владеет черновиком `Date`) → модалка циферблата от `timepicker-ui`. Календарь — `react-day-picker@10` (тащит транзитивную `date-fns@4`, границы 01.1900–12.2100, дропдаун года, месяц — стрелками), циферблат — `timepicker-ui@4.4` в 24h (внешнее кольцо 0-11, внутреннее 12-23), рисует свою модалку в `body` поверх нашего попапа с `backdrop: true` (её полноэкранный слой перехватывает тап вне — иначе он закрывает наш попап) и `enableScrollbar: true`. Обе темизуются переменными (`--rdp-*`, `--tp-*`) в SCSS рядом с обёрткой, не мапой классов. Форматирование — фасад `shared/lib/date` на `Intl`, локаль из `i18next.language`; `date-fns` за пределы `shared/ui/calendar` не выходит. Дефолт `measuredAt` — «сейчас» с обнулёнными секундами, шаг минут 1. Коммит значения — только кнопками, тап по оверлею отменяет. См. `docs/adr/0004-date-time-picker-on-libraries.md`.
+
 **i18n:** `i18next` + `react-i18next`. Initialized before app render (`src/i18n/`); Russian only (`src/locales/ru.json`). Used in DB `populate` hook for default vehicle name.
 
 **Shared package:** `@odolog/shared` (`packages/shared`) — shared TypeScript types imported by both apps: `TVehicles`, `TOdometerEntries`, `TFuelEntries`.
@@ -89,6 +93,7 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 - Routing (vehicle-scoped list/analytics + global settings) + tabbar + active-vehicle store: done (Analytics, Settings are stubs)
 - List widget (`widgets/list`): in progress
 - Popup mechanism (`popups-engine`): in progress (migration from own bottom-sheet mechanism)
+- Date/time picker (calendar + clock face): decided, not yet implemented (ADR 0004) — replaces the `react-mobile-picker` wheel in `shared/ui/date-picker`
 - Forms (odometer/fuel popups), FAB speed-dial: not yet implemented
 
 Phase tracking and full UI spec live in `docs/plan.md`. Architectural decisions in `docs/adr/`.

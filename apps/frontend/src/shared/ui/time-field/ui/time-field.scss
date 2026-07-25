@@ -1,0 +1,23 @@
+// timepicker-ui mounts its modal into <body>, outside this component's tree,
+// so theming vars must be global rather than scoped under .time-field.
+:root {
+  --tp-primary: var(--color-blue-200);
+  --tp-on-primary: var(--color-white-100);
+  --tp-primary-container: var(--color-blue-100);
+  --tp-on-primary-container: var(--color-blue-200);
+  --tp-surface: var(--color-white-100);
+  --tp-surface-container: var(--color-gray-100);
+  --tp-on-surface: var(--color-black-100);
+  --tp-on-surface-variant: var(--color-black-200);
+  --tp-bg: var(--color-gray-100);
+  --tp-input-bg: var(--color-gray-100);
+  --tp-border: var(--color-black-100);
+  --tp-outline: var(--color-blue-200);
+  --tp-hover-bg: var(--color-blue-100);
+  --tp-text: var(--color-black-100);
+  --tp-text-secondary: var(--color-black-200);
+}
+
+.tp-ui-cancel-btn {
+  display: none;
+}
