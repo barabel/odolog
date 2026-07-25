@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@idem.agency/popups-engine": "^0.0.11",
     "@tailwindcss/vite": "^4.3.0",
     "classix": "^2.2.12",
     "dexie": "^4.4.3",

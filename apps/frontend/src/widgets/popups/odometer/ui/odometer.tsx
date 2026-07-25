@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
 
 type TPopupOdometer = {
-  close: () => void;
+  closePopup: () => void;
 };
 
 export const PopupOdometer: FCClass<TPopupOdometer> = ({
-  close,
+  closePopup,
 }) => {
   const { t } = useTranslation();
 
@@ -24,7 +24,7 @@ export const PopupOdometer: FCClass<TPopupOdometer> = ({
 
   const onSumbit = handleSubmit((data) => {
     console.log('data', data);
-    close();
+    closePopup();
   });
 
   return (

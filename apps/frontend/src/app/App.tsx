@@ -7,6 +7,7 @@ import { SettingsPage } from '@/pages/settings';
 import { VehicleRedirect } from '@/entities/vehicle';
 import { BottomSheetStack } from '@/shared/lib/bottom-sheet';
 import { sheetRegistry } from '@/widgets/popups/registry';
+import { PopupsProvider } from './providers/popups';
 
 const App: FCClass = () => {
   return (
@@ -15,35 +16,37 @@ const App: FCClass = () => {
         registry={sheetRegistry}
       />
 
-      <Routes>
-        <Route
-          element={<LayoutIndex />}
-        >
+      <PopupsProvider>
+        <Routes>
           <Route
-            path={ROUTES.patterns.vehicle}
+            element={<LayoutIndex />}
           >
             <Route
-              index
-              element={<ListPage />}
-            />
+              path={ROUTES.patterns.vehicle}
+            >
+              <Route
+                index
+                element={<ListPage />}
+              />
+
+              <Route
+                path={ROUTES.patterns.analytics}
+                element={<AnalyticsPage />}
+              />
+            </Route>
 
             <Route
-              path={ROUTES.patterns.analytics}
-              element={<AnalyticsPage />}
+              path={ROUTES.patterns.settings}
+              element={<SettingsPage />}
             />
           </Route>
 
           <Route
-            path={ROUTES.patterns.settings}
-            element={<SettingsPage />}
+            path="/"
+            element={<VehicleRedirect />}
           />
-        </Route>
-
-        <Route
-          path="/"
-          element={<VehicleRedirect />}
-        />
-      </Routes>
+        </Routes>
+      </PopupsProvider>
     </BrowserRouter>
   );
 };

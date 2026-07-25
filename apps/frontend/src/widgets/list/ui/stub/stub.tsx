@@ -3,11 +3,13 @@ import { Icon } from '@/shared/ui/icon';
 import cx from 'classix';
 import { useTranslation } from 'react-i18next';
 import { openSheet } from '@/shared/lib/bottom-sheet';
+import { usePopups } from '@/shared/lib/popups';
 
 export const ListStub: FCClass = ({
   className,
 }) => {
   const { t } = useTranslation();
+  const { openPopup } = usePopups();
 
   return (
     <div
@@ -46,7 +48,7 @@ export const ListStub: FCClass = ({
       >
         <button
           className="grow-1 basis-1/2 h-40 px-16 border-1 border-white-200 rounded-xl"
-          onClick={() => openSheet('odometer')}
+          onClick={() => openPopup('odometer')}
         >
           {t('list.stub.odometerButton')}
         </button>

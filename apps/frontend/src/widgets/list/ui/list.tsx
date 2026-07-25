@@ -6,6 +6,7 @@ import { IconsArray } from '@/shared/enums/icons';
 import { ListStub } from './stub/stub';
 import { FAB_ITEM_VALUE } from '../const';
 import { openSheet } from '@/shared/lib/bottom-sheet';
+import { usePopups } from '@/shared/lib/popups';
 
 type TGetEntryTextParams = {
   t: (string: string) => string;
@@ -34,12 +35,13 @@ export const List: FCClass<TList> = ({
   entries,
 }) => {
   const { t } = useTranslation();
+  const { openPopup } = usePopups();
 
   const noEntries = !entries?.length;
 
   const handleFabItemClick = (itemValue: TFabButton['items'][0]['value']) => {
     if (itemValue === FAB_ITEM_VALUE.ODOMETER) {
-      openSheet('odometer');
+      openPopup('odometer');
       return;
     }
 
