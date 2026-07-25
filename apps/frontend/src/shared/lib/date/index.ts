@@ -14,6 +14,7 @@ export const formatFullMoment = (date: Date) => {
   const datePart = new Intl.DateTimeFormat(getLocale(), {
     day: 'numeric',
     month: 'long',
+    year: 'numeric',
   }).format(date);
 
   return `${datePart}, ${formatTime(date)}`;
