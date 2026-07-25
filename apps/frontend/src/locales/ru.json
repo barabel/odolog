@@ -26,7 +26,7 @@
   "popups": {
     "odometer": {
       "title": "Одометр",
-      "datePicker": {
+      "dateTimeInput": {
         "label": "Дата"
       },
       "inputValue": {
@@ -39,6 +39,14 @@
     },
     "fuel": {
       "title": "Заправка"
+    },
+    "dateTimePicker": {
+      "time": {
+        "label": "Время"
+      },
+      "submit": {
+        "title": "Готово"
+      }
     }
   }
 }

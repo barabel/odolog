@@ -1,11 +1,14 @@
-import { DatePicker } from '@/shared/ui/date-picker';
 import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
+import { DateTimeInput } from '@/shared/ui/date-time-input';
+import { usePopups } from '@/shared/lib/popups';
+import { nowWithZeroedSeconds } from '@/shared/lib/date';
 
 export const PopupOdometer: FCPopup = ({
   closePopup,
 }) => {
   const { t } = useTranslation();
+  const { openPopup } = usePopups();
 
   const {
     control,
@@ -13,7 +16,7 @@ export const PopupOdometer: FCPopup = ({
     handleSubmit,
   } = useForm({
     defaultValues: {
-      date: null as Date | null,
+      date: nowWithZeroedSeconds(),
       odometer: undefined,
     },
   });
@@ -41,7 +44,7 @@ export const PopupOdometer: FCPopup = ({
           className="flex flex-col gap-4 w-full"
         >
           <div>
-            {t('popups.odometer.datePicker.label')}
+            {t('popups.odometer.dateTimeInput.label')}
           </div>
 
           <Controller
@@ -49,11 +52,14 @@ export const PopupOdometer: FCPopup = ({
             name="date"
             render={({ field: { value, onChange } }) => {
               return (
-                <DatePicker
+                <DateTimeInput
                   className="w-full"
-                  selected={value ? new Date(value) : null}
-                  onChange={(date: Date | null) => {
-                    onChange(date ? date.getTime() : undefined);
+                  value={value}
+                  onClick={() => {
+                    openPopup('dateTimePicker', {
+                      value,
+                      onConfirm: onChange,
+                    });
                   }}
                 />
               );
