@@ -30,6 +30,7 @@ const getEntryText = (params: TGetEntryTextParams) => {
 
 export const List: FCClass<TList> = ({
   className,
+  vehicleId,
   vehicleName,
   entries,
 }) => {
@@ -40,7 +41,7 @@ export const List: FCClass<TList> = ({
 
   const handleFabItemClick = (itemValue: TFabButton['items'][0]['value']) => {
     if (itemValue === FAB_ITEM_VALUE.ODOMETER) {
-      openPopup('odometer');
+      openPopup('odometer', { vehicleId });
       return;
     }
 
@@ -75,7 +76,9 @@ export const List: FCClass<TList> = ({
       </div>
 
       {noEntries && (
-        <ListStub />
+        <ListStub
+          vehicleId={vehicleId}
+        />
       )}
 
       <FabButton

@@ -3,9 +3,20 @@ import { Controller, useForm } from 'react-hook-form';
 import { DateTimeInput } from '@/shared/ui/date-time-input';
 import { usePopups } from '@/shared/lib/popups';
 import { nowWithZeroedSeconds } from '@/shared/lib/date';
+import { createOdometerEntry } from '@/entities/entry';
 
-export const PopupOdometer: FCPopup = ({
+type TOdometerForm = {
+  date: Date;
+  odometer: number;
+};
+
+type TPopupOdometerProps = {
+  vehicleId: string;
+};
+
+export const PopupOdometer: FCPopup<TPopupOdometerProps> = ({
   closePopup,
+  vehicleId,
 }) => {
   const { t } = useTranslation();
   const { openPopup } = usePopups();
@@ -14,15 +25,30 @@ export const PopupOdometer: FCPopup = ({
     control,
     register,
     handleSubmit,
-  } = useForm({
+    formState: {
+      isValid,
+      isSubmitting,
+    },
+  } = useForm<TOdometerForm>({
+    mode: 'onChange',
     defaultValues: {
       date: nowWithZeroedSeconds(),
       odometer: undefined,
     },
   });
 
-  const onSumbit = handleSubmit((data) => {
-    console.log('data', data);
+  const onSubmit = handleSubmit(async (data) => {
+    const {
+      date,
+      odometer,
+    } = data;
+
+    await createOdometerEntry({
+      vehicleId,
+      measuredAt: date.getTime(),
+      odometer,
+    });
+
     closePopup();
   });
 
@@ -38,7 +64,7 @@ export const PopupOdometer: FCPopup = ({
 
       <form
         className="flex flex-col gap-10"
-        onSubmit={onSumbit}
+        onSubmit={onSubmit}
       >
         <div
           className="flex flex-col gap-4 w-full"
@@ -78,7 +104,12 @@ export const PopupOdometer: FCPopup = ({
             className="grow-1 relative"
           >
             <input
-              {...register('odometer')}
+              {...register('odometer', {
+                required: true,
+                valueAsNumber: true,
+                validate: value => Number.isInteger(value) && value >= 1,
+              })}
+              inputMode="numeric"
               className="flex w-full h-40 pl-20 pr-45 border-1 border-black-100 rounded-xl"
             />
 
@@ -92,6 +123,7 @@ export const PopupOdometer: FCPopup = ({
 
         <button
           className="w-full h-40 border-1 border-black-100 rounded-xl"
+          disabled={!isValid || isSubmitting}
         >
           {t('popups.odometer.submit.title')}
         </button>

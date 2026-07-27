@@ -5,7 +5,9 @@ import { PopupOdometer } from './odometer';
 
 declare module '@/shared/lib/popups' {
   interface PopupsMap {
-    odometer: undefined;
+    odometer: {
+      vehicleId: string;
+    };
     fuel: undefined;
     dateTimePicker: {
       value: Date;

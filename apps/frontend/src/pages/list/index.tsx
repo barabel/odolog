@@ -35,11 +35,14 @@ export const ListPage: FCClass = ({
         className,
       )}
     >
-      <List
-        className="h-full"
-        vehicleName={vehicle?.name}
-        entries={entries}
-      />
+      {vehicleId && (
+        <List
+          className="h-full"
+          vehicleId={vehicleId}
+          vehicleName={vehicle?.name}
+          entries={entries}
+        />
+      )}
     </div>
   );
 };
