@@ -40,7 +40,7 @@ src/
   pages/      # list, analytics, settings
   widgets/    # composite blocks (tabbar, list)
   features/   # add-odometer-entry, add-fuel-entry, sync (planned)
-  entities/   # vehicle (active-vehicle store); odometer-entry, fuel-entry (planned)
+  entities/   # vehicle (active-vehicle store); entry (planned)
   shared/
     lib/      # db/ (Dexie/IndexedDB), id.ts (nanoid), popups/ (facade), date/ (formatting)
     ui/       # reusable components (Icon, date-time-input, calendar, time-field, ...)
@@ -60,7 +60,7 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 
 **Active Vehicle (state):** Zustand store `useActiveVehicleStore` (`entities/vehicle/store`), persisted to localStorage (`odolog:active-vehicle`), holds `activeVehicleId`. **URL is the source of truth** — all resolve/validate/sync/redirect logic lives in one hook `useVehicleRouting()` (`entities/vehicle`), over the pure function `resolveVehicleRouting({ paramVehicleId, vehicles, activeVehicleId }) → VehicleRoutingState` (`loading | redirect | ready`). The hook does a single `useLiveQuery(db.vehicles.toArray())` and is the **only** store writer (one idempotent sync effect: writes `activeVehicleId` only in `ready` when it differs). Consumers render the directive: `LayoutIndex` (`switch (status)`) and `VehicleRedirect` (root `/`). Active Vehicle is device-local — not part of the sync protocol. See `docs/adr/0001-active-vehicle-url-vs-store.md`. **Zustand** (`zustand` v5) is the app's client-state library.
 
-**Data layer:** Single Dexie DB `odolog` (`shared/lib/db`), v1 with 3 tables: `vehicles`, `odometerEntries`, `fuelEntries`. Field names are **camelCase** (`vehicleId`, `updatedAt`, `deletedAt`). Soft delete via `deletedAt: number | null` (UI filters `deletedAt === null`). On first run the `populate` hook seeds one default vehicle (waits for i18n init). Live data via `useLiveQuery` (dexie-react-hooks). IDs: `genId(size?)` (nanoid, 21 default) for entries, `genVehicleId()` (6-char URL-safe custom alphabet) for vehicles — both in `shared/lib/id.ts`.
+**Data layer:** Single Dexie DB `odolog` (`shared/lib/db`), v1 with 2 tables: `vehicles` and `entries` (index `id, vehicleId, type, measuredAt, synced, deletedAt`). `entries` is a **discriminated union on `type`** (`'odometer'` | `'fuel'`) — one timeline for both kinds, ordered by `measuredAt` (user-supplied) with `createdAt` as tie-breaker; see `docs/adr/0002-single-entry-table-and-measured-at.md`. Types live in `@odolog/shared` (`TEntries`, `TOdometerEntry`, `TFuelEntry`). Field names are **camelCase** (`vehicleId`, `updatedAt`, `deletedAt`). Soft delete via `deletedAt: number | null` (UI filters `deletedAt === null`). On first run the `populate` hook seeds one default vehicle (waits for i18n init). Live data via `useLiveQuery` (dexie-react-hooks). IDs: `genId(size?)` (nanoid, 21 default) for entries, `genVehicleId()` (6-char URL-safe custom alphabet) for vehicles — both in `shared/lib/id.ts`.
 
 **Styling:** Tailwind CSS 4 via `@tailwindcss/vite` plugin. SCSS доступен для edge-cases; кастомные миксины/функции в `assets/styles/lib/`.
 
@@ -70,6 +70,10 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 - Base `<main>` element: `max-width: 375px`, centered — app is designed for mobile viewport width.
 
 **CSS utility:** `classix` (`cx()`) for conditional class merging.
+
+**Кнопки:** кнопки-действия (submit'ы попапов, кнопки stub'а) идут через `shared/ui/button` (`Button`). Варианты — `blue` (заливка, дефолт) и `white` (белая заливка + граница); проп `url` превращает контрол в `<Link>` react-router с той же вёрсткой (`disabled`/`type` при этом не применяются). Ширина/растяжение задаются снаружи через `className` (`cx` не мержит конфликтующие Tailwind-классы — цвета извне не передавать), типографика — пропом `typography` (дефолт `t2`). `DateTimeInput`, `TimeField` и `FabButton` держат свои `<button>` — это поля/FAB со своей семантикой, на `Button` не переводятся.
+
+**Поля ввода:** все текстовые поля идут через `shared/ui/input` (`Input`) — контролируемый контрол со **строковым** значением (`value: string` / `onChange(value: string)`); парсинга и фильтрации ввода в нём нет, преобразование и валидация живут в форме. Корень — `<label>` (подпись пропом `label`, клик по ней фокусирует поле, id не генерируются), единица измерения — проп `unit`, стоит в потоке справа от значения. Рамка/заливка/радиус — на коробке, поэтому подсветка накрывает и суффикс. Пустое и не в фокусе — фон `gray-100` и рамка `white-200`; при непустом значении **или** `focus-within` включается акцент вариантом `blue` (дефолт) или `green` — карта вариантов внутри контрола, цвета извне не передаются (`cx` не мержит конфликтующие Tailwind-классы). Ширина/растяжение — снаружи через `className`, типографика значения — проп `typography` (дефолт `t1`), вид клавиатуры — `inputMode` (`type` всегда текстовый: никаких спиннеров и инкремента по скроллу). Плейсхолдера нет. `DateTimeInput` повторяет коробку `Input` (подпись пропом `label` и та же раскладка `flex flex-col gap-4`, высота/паддинги/радиус), но классы дублирует, а не делит общий примитив, и всегда остаётся нейтральным: значение у него есть всегда, поэтому «filled → акцент» там не применяется; корень — `<div>`, а не `<label>` (внутри `<button>`, подпись на него не наводится).
 
 **Icons:** Custom Vite plugin (`apps/frontend/plugins/vite-plugin-icon-sprite.ts`) compiles SVGs from `src/assets/svg/` into `/public/sprite.svg` and auto-generates `shared/enums/icons/index.ts` enum on dev server start and on file changes. To add an icon: drop SVG into `src/assets/svg/`, the enum and sprite regenerate automatically. Icon component renders `<svg><use href="/sprite.svg#name">`.
 
@@ -89,12 +93,14 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 
 ## Current state (Phase 1 in progress)
 
-- DB schema (3 tables) + default vehicle: done
+- DB schema (`vehicles` + single `entries` table) + default vehicle: done
 - Routing (vehicle-scoped list/analytics + global settings) + tabbar + active-vehicle store: done (Analytics, Settings are stubs)
-- List widget (`widgets/list`): in progress
-- Popup mechanism (`popups-engine`): in progress (migration from own bottom-sheet mechanism)
-- Date/time picker (calendar + clock face): decided, not yet implemented (ADR 0004) — replaces the `react-mobile-picker` wheel in `shared/ui/date-picker`
-- Forms (odometer/fuel popups), FAB speed-dial: not yet implemented
+- Popup mechanism (`popups-engine`): done — own bottom-sheet mechanism removed entirely
+- FAB speed-dial + empty-state stub: done
+- Date/time picker (calendar + clock face, ADR 0004): done — `shared/lib/date`, `shared/ui/calendar`, `shared/ui/time-field`, `widgets/popups/date-time-picker`; the `react-mobile-picker` wheel is gone
+- Entry list (`widgets/list`): renders header + stub + FAB only — the list of entries itself is not implemented
+- Forms: odometer popup has a working date/time field but `onSubmit` is a stub (nothing is written to Dexie); fuel popup is a title only
+- Not started: odometer delta, entry deletion, fuel form
 
 Phase tracking and full UI spec live in `docs/plan.md`. Architectural decisions in `docs/adr/`.
 

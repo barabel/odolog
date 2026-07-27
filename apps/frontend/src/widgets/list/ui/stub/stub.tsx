@@ -1,11 +1,17 @@
 import { IconsArray } from '@/shared/enums/icons';
 import { Icon } from '@/shared/ui/icon';
+import { Button } from '@/shared/ui/button';
 import cx from 'classix';
 import { useTranslation } from 'react-i18next';
 import { usePopups } from '@/shared/lib/popups';
 
-export const ListStub: FCClass = ({
+type TListStub = {
+  vehicleId: string;
+};
+
+export const ListStub: FCClass<TListStub> = ({
   className,
+  vehicleId,
 }) => {
   const { t } = useTranslation();
   const { openPopup } = usePopups();
@@ -45,19 +51,21 @@ export const ListStub: FCClass = ({
       <div
         className="flex items-center gap-10"
       >
-        <button
-          className="grow-1 basis-1/2 h-40 px-16 border-1 border-white-200 rounded-xl"
-          onClick={() => openPopup('odometer')}
+        <Button
+          className="grow-1 basis-1/2"
+          variant="white"
+          onClick={() => openPopup('odometer', { vehicleId })}
         >
           {t('list.stub.odometerButton')}
-        </button>
+        </Button>
 
-        <button
-          className="grow-1 basis-1/2 h-40 px-16 border-1 border-white-200 rounded-xl"
+        <Button
+          className="grow-1 basis-1/2"
+          variant="white"
           onClick={() => openPopup('fuel')}
         >
           {t('list.stub.fuelButton')}
-        </button>
+        </Button>
       </div>
     </div>
   );

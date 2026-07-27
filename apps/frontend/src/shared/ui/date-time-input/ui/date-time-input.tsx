@@ -1,22 +1,45 @@
 import cx from 'classix';
 import { formatFullMoment } from '@/shared/lib/date';
+import { Icon } from '@/shared/ui/icon';
+import { IconsArray } from '@/shared/enums/icons';
 import type { TDateTimeInput } from '../types';
 
 export const DateTimeInput: FCClass<TDateTimeInput> = ({
   className,
   value,
   onClick,
+  label,
 }) => {
   return (
-    <button
-      type="button"
+    <div
       className={cx(
-        'flex items-center h-40 px-20 border-1 border-black-100 rounded-xl text-left',
+        'flex flex-col gap-4',
         className,
       )}
-      onClick={onClick}
     >
-      {formatFullMoment(value)}
-    </button>
+      {label && (
+        <div>
+          {label}
+        </div>
+      )}
+
+      <button
+        type="button"
+        className={cx(
+          'flex items-center gap-10 h-48 px-20 border-1 rounded-xl text-left',
+          'bg-gray-100 border-white-200 text-black-100',
+          'text-base!',
+          't2',
+        )}
+        onClick={onClick}
+      >
+        <Icon
+          className="stroke-black-100"
+          icon={IconsArray.calendar}
+        />
+
+        {formatFullMoment(value)}
+      </button>
+    </div>
   );
 };

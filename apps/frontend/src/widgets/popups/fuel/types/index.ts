@@ -1,0 +1,1 @@
+export type TPopupFuel = undefined;

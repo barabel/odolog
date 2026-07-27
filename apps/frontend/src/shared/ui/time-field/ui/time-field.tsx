@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TimepickerUI } from 'timepicker-ui';
+import cx from 'classix';
 import { combineDateAndTime, formatTime } from '@/shared/lib/date';
 import type { TTimeField } from '../types';
 import 'timepicker-ui/main.css';
 import './time-field.scss';
 
 export const TimeField: FCClass<TTimeField> = ({
+  className,
   value,
   onConfirm,
 }) => {
@@ -59,7 +61,12 @@ export const TimeField: FCClass<TTimeField> = ({
   return (
     <button
       type="button"
-      className="flex items-center justify-between h-40 px-20 border-1 border-black-100 rounded-xl w-full"
+      className={cx(
+        'flex items-center justify-between gap-10 h-48 px-20 border-1 rounded-xl text-left',
+        't1',
+        'bg-gray-100 border-white-200 text-black-100',
+        className,
+      )}
       onClick={() => {
         pickerRef.current?.open();
       }}
