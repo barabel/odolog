@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
 import { DateTimeInput } from '@/shared/ui/date-time-input';
-import { usePopups } from '@/shared/lib/popups';
+import { usePopups, useSuccessPopup, useErrorPopup } from '@/shared/lib/popups';
 import { nowWithZeroedSeconds } from '@/shared/lib/date';
 import { createOdometerEntry } from '@/entities/entry';
 
@@ -15,11 +15,12 @@ type TPopupOdometerProps = {
 };
 
 export const PopupOdometer: FCPopup<TPopupOdometerProps> = ({
-  closePopup,
   vehicleId,
 }) => {
   const { t } = useTranslation();
   const { openPopup } = usePopups();
+  const { showSuccess } = useSuccessPopup();
+  const { showError } = useErrorPopup();
 
   const {
     control,
@@ -43,13 +44,18 @@ export const PopupOdometer: FCPopup<TPopupOdometerProps> = ({
       odometer,
     } = data;
 
-    await createOdometerEntry({
-      vehicleId,
-      measuredAt: date.getTime(),
-      odometer,
-    });
+    try {
+      await createOdometerEntry({
+        vehicleId,
+        measuredAt: date.getTime(),
+        odometer,
+      });
 
-    closePopup();
+      showSuccess();
+    }
+    catch {
+      showError();
+    }
   });
 
   return (
