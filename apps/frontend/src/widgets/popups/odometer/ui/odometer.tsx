@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
 import { DateTimeInput } from '@/shared/ui/date-time-input';
 import { Button } from '@/shared/ui/button';
+import { Input } from '@/shared/ui/input';
 import { usePopups, useSuccessPopup, useErrorPopup } from '@/shared/lib/popups';
 import { nowWithZeroedSeconds } from '@/shared/lib/date';
 import { createOdometerEntry } from '@/entities/entry';
@@ -17,7 +18,6 @@ export const PopupOdometer: FCPopup<TPopupOdometer> = ({
 
   const {
     control,
-    register,
     handleSubmit,
     formState: {
       isValid,
@@ -92,32 +92,28 @@ export const PopupOdometer: FCPopup<TPopupOdometer> = ({
           />
         </div>
 
-        <label
-          className="flex flex-col gap-4 w-full"
-        >
-          <div>
-            {t('popups.odometer.inputValue.label')}
-          </div>
-
-          <div
-            className="grow-1 relative"
-          >
-            <input
-              {...register('odometer', {
-                required: true,
-                validate: value => /^\d+$/.test(value) && Number(value) >= 1,
-              })}
-              inputMode="numeric"
-              className="flex w-full h-40 pl-20 pr-45 border-1 border-black-100 rounded-xl"
-            />
-
-            <div
-              className="absolute top-1/2 right-20 -translate-y-1/2"
-            >
-              {t('popups.odometer.inputValue.unit')}
-            </div>
-          </div>
-        </label>
+        <Controller
+          control={control}
+          name="odometer"
+          rules={{
+            required: true,
+            validate: (value) => {
+              return /^\d+$/.test(value) && Number(value) >= 1;
+            },
+          }}
+          render={({ field: { value, onChange } }) => {
+            return (
+              <Input
+                className="w-full"
+                label={t('popups.odometer.inputValue.label')}
+                unit={t('popups.odometer.inputValue.unit')}
+                inputMode="numeric"
+                value={value}
+                onChange={onChange}
+              />
+            );
+          }}
+        />
 
         <Button
           className="w-full"
