@@ -27,7 +27,7 @@ export const PopupOdometer: FCPopup<TPopupOdometer> = ({
     mode: 'onChange',
     defaultValues: {
       date: nowWithZeroedSeconds(),
-      odometer: undefined,
+      odometer: '',
     },
   });
 
@@ -41,7 +41,7 @@ export const PopupOdometer: FCPopup<TPopupOdometer> = ({
       await createOdometerEntry({
         vehicleId,
         measuredAt: date.getTime(),
-        odometer,
+        odometer: Number(odometer),
       });
 
       showSuccess();
@@ -105,8 +105,7 @@ export const PopupOdometer: FCPopup<TPopupOdometer> = ({
             <input
               {...register('odometer', {
                 required: true,
-                valueAsNumber: true,
-                validate: value => Number.isInteger(value) && value >= 1,
+                validate: value => /^\d+$/.test(value) && Number(value) >= 1,
               })}
               inputMode="numeric"
               className="flex w-full h-40 pl-20 pr-45 border-1 border-black-100 rounded-xl"

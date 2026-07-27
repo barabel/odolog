@@ -4,5 +4,5 @@ export type TPopupOdometer = {
 
 export type TOdometerForm = {
   date: Date;
-  odometer: number;
+  odometer: string;
 };
