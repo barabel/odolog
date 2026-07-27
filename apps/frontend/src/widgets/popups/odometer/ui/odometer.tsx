@@ -7,6 +7,7 @@ import { usePopups, useSuccessPopup, useErrorPopup } from '@/shared/lib/popups';
 import { nowWithZeroedSeconds } from '@/shared/lib/date';
 import { createOdometerEntry } from '@/entities/entry';
 import type { TOdometerForm, TPopupOdometer } from '../types';
+import cx from 'classix';
 
 export const PopupOdometer: FCPopup<TPopupOdometer> = ({
   vehicleId,
@@ -56,13 +57,16 @@ export const PopupOdometer: FCPopup<TPopupOdometer> = ({
       className="p-20"
     >
       <div
-        className="mb-20"
+        className={cx(
+          'mb-20',
+          't1',
+        )}
       >
         {t('popups.odometer.title')}
       </div>
 
       <form
-        className="flex flex-col gap-10"
+        className="flex flex-col gap-16"
         onSubmit={onSubmit}
       >
         <div

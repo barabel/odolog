@@ -4,7 +4,7 @@ import type { TButton, TButtonVariant } from '../types';
 
 const variants: Record<TButtonVariant, string> = {
   blue: 'bg-blue-200 text-white-100 hover:bg-blue-300 active:bg-blue-300',
-  transparent: 'border-1 border-white-200 text-black-100 hover:bg-gray-100 active:bg-white-200',
+  white: 'bg-white-100 border-1 border-white-200 text-black-100 hover:bg-gray-100 active:bg-white-200',
 };
 
 export const Button: FCClass<TButton> = ({

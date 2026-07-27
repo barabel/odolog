@@ -44,7 +44,7 @@ export const Input: FCClass<TInput> = ({
           typography,
           isFilled
             ? variants[variant]
-            : cx('border-white-200 text-black-100', focusVariants[variant]),
+            : cx('bg-gray-100 border-white-200 text-black-100', focusVariants[variant]),
         )}
       >
         <input

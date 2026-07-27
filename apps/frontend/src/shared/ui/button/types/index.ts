@@ -1,4 +1,4 @@
-export type TButtonVariant = 'blue' | 'transparent';
+export type TButtonVariant = 'blue' | 'white';
 
 export type TButton = {
   variant?: TButtonVariant;
