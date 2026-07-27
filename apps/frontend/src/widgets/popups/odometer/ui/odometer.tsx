@@ -69,32 +69,25 @@ export const PopupOdometer: FCPopup<TPopupOdometer> = ({
         className="flex flex-col gap-16"
         onSubmit={onSubmit}
       >
-        <div
-          className="flex flex-col gap-4 w-full"
-        >
-          <div>
-            {t('popups.odometer.dateTimeInput.label')}
-          </div>
-
-          <Controller
-            control={control}
-            name="date"
-            render={({ field: { value, onChange } }) => {
-              return (
-                <DateTimeInput
-                  className="w-full"
-                  value={value}
-                  onClick={() => {
-                    openPopup('dateTimePicker', {
-                      value,
-                      onConfirm: onChange,
-                    });
-                  }}
-                />
-              );
-            }}
-          />
-        </div>
+        <Controller
+          control={control}
+          name="date"
+          render={({ field: { value, onChange } }) => {
+            return (
+              <DateTimeInput
+                className="w-full"
+                label={t('popups.odometer.dateTimeInput.label')}
+                value={value}
+                onClick={() => {
+                  openPopup('dateTimePicker', {
+                    value,
+                    onConfirm: onChange,
+                  });
+                }}
+              />
+            );
+          }}
+        />
 
         <Controller
           control={control}
