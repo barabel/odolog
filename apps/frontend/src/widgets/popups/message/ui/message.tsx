@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { Button } from '@/shared/ui/button';
 import type { TPopupMessage } from '../types';
 
 export const PopupMessage: FCPopup<TPopupMessage> = ({
@@ -22,12 +23,12 @@ export const PopupMessage: FCPopup<TPopupMessage> = ({
         </div>
       )}
 
-      <button
-        className="w-full h-40 border-1 border-black-100 rounded-xl"
+      <Button
+        className="w-full"
         onClick={closePopup}
       >
         {t('popups.message.ok')}
-      </button>
+      </Button>
     </div>
   );
 };

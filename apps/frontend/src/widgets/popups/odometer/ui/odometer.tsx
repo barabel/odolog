@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
 import { DateTimeInput } from '@/shared/ui/date-time-input';
+import { Button } from '@/shared/ui/button';
 import { usePopups, useSuccessPopup, useErrorPopup } from '@/shared/lib/popups';
 import { nowWithZeroedSeconds } from '@/shared/lib/date';
 import { createOdometerEntry } from '@/entities/entry';
@@ -119,12 +120,13 @@ export const PopupOdometer: FCPopup<TPopupOdometer> = ({
           </div>
         </label>
 
-        <button
-          className="w-full h-40 border-1 border-black-100 rounded-xl"
+        <Button
+          className="w-full"
+          type="submit"
           disabled={!isValid || isSubmitting}
         >
           {t('popups.odometer.submit.title')}
-        </button>
+        </Button>
       </form>
     </div>
   );
