@@ -1,11 +1,7 @@
 import { useTranslation } from 'react-i18next';
+import type { TPopupMessage } from '../types';
 
-type TPopupMessageProps = {
-  title: string;
-  description?: string;
-};
-
-export const PopupMessage: FCPopup<TPopupMessageProps> = ({
+export const PopupMessage: FCPopup<TPopupMessage> = ({
   closePopup,
   title,
   description,

@@ -1,23 +1,15 @@
 import type { TPopupsRegistry } from '@/shared/lib/popups';
-import { PopupDateTimePicker } from './date-time-picker';
-import { PopupFuel } from './fuel';
-import { PopupMessage } from './message';
-import { PopupOdometer } from './odometer';
+import { PopupDateTimePicker, type TPopupDateTimePicker } from './date-time-picker';
+import { PopupFuel, type TPopupFuel } from './fuel';
+import { PopupMessage, type TPopupMessage } from './message';
+import { PopupOdometer, type TPopupOdometer } from './odometer';
 
 declare module '@/shared/lib/popups' {
   interface PopupsMap {
-    odometer: {
-      vehicleId: string;
-    };
-    fuel: undefined;
-    dateTimePicker: {
-      value: Date;
-      onConfirm: (value: Date) => void;
-    };
-    message: {
-      title: string;
-      description?: string;
-    };
+    odometer: TPopupOdometer;
+    fuel: TPopupFuel;
+    dateTimePicker: TPopupDateTimePicker;
+    message: TPopupMessage;
   }
 }
 

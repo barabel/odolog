@@ -3,11 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Calendar } from '@/shared/ui/calendar';
 import { TimeField } from '@/shared/ui/time-field';
 import { combineDateAndTime } from '@/shared/lib/date';
-
-type TPopupDateTimePicker = {
-  value: Date;
-  onConfirm: (value: Date) => void;
-};
+import type { TPopupDateTimePicker } from '../types';
 
 export const PopupDateTimePicker: FCPopup<TPopupDateTimePicker> = ({
   value,

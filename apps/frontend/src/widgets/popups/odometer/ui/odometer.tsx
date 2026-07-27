@@ -4,17 +4,9 @@ import { DateTimeInput } from '@/shared/ui/date-time-input';
 import { usePopups, useSuccessPopup, useErrorPopup } from '@/shared/lib/popups';
 import { nowWithZeroedSeconds } from '@/shared/lib/date';
 import { createOdometerEntry } from '@/entities/entry';
+import type { TOdometerForm, TPopupOdometer } from '../types';
 
-type TOdometerForm = {
-  date: Date;
-  odometer: number;
-};
-
-type TPopupOdometerProps = {
-  vehicleId: string;
-};
-
-export const PopupOdometer: FCPopup<TPopupOdometerProps> = ({
+export const PopupOdometer: FCPopup<TPopupOdometer> = ({
   vehicleId,
 }) => {
   const { t } = useTranslation();
