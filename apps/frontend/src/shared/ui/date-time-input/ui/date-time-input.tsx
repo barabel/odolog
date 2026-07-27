@@ -27,8 +27,9 @@ export const DateTimeInput: FCClass<TDateTimeInput> = ({
         type="button"
         className={cx(
           'flex items-center gap-10 h-48 px-20 border-1 rounded-xl text-left',
-          't1',
           'bg-gray-100 border-white-200 text-black-100',
+          'text-base!',
+          't2',
         )}
         onClick={onClick}
       >
