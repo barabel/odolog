@@ -3,7 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { DateTimeInput } from '@/shared/ui/date-time-input';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
-import { usePopups, useSuccessPopup, useErrorPopup } from '@/shared/lib/popups';
+import { usePopups, useErrorPopup } from '@/shared/lib/popups';
 import { nowWithZeroedSeconds } from '@/shared/lib/date';
 import { createOdometerEntry } from '@/entities/entry';
 import type { TOdometerForm, TPopupOdometer } from '../types';
@@ -11,10 +11,10 @@ import cx from 'classix';
 
 export const PopupOdometer: FCPopup<TPopupOdometer> = ({
   vehicleId,
+  closePopup,
 }) => {
   const { t } = useTranslation();
   const { openPopup } = usePopups();
-  const { showSuccess } = useSuccessPopup();
   const { showError } = useErrorPopup();
 
   const {
@@ -45,7 +45,7 @@ export const PopupOdometer: FCPopup<TPopupOdometer> = ({
         odometer: Number(odometer),
       });
 
-      showSuccess();
+      closePopup();
     }
     catch {
       showError();

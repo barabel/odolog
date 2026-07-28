@@ -3,7 +3,7 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 import { DateTimeInput } from '@/shared/ui/date-time-input';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
-import { usePopups, useSuccessPopup, useErrorPopup } from '@/shared/lib/popups';
+import { usePopups, useErrorPopup } from '@/shared/lib/popups';
 import { nowWithZeroedSeconds } from '@/shared/lib/date';
 import { parseDecimal, formatNumber } from '@/shared/lib/number';
 import { createFuelEntry, pricePerLiter } from '@/entities/entry';
@@ -12,10 +12,10 @@ import cx from 'classix';
 
 export const PopupFuel: FCPopup<TPopupFuel> = ({
   vehicleId,
+  closePopup,
 }) => {
   const { t } = useTranslation();
   const { openPopup } = usePopups();
-  const { showSuccess } = useSuccessPopup();
   const { showError } = useErrorPopup();
 
   const {
@@ -68,7 +68,7 @@ export const PopupFuel: FCPopup<TPopupFuel> = ({
         totalCost: parseDecimal(totalCost)!,
       });
 
-      showSuccess();
+      closePopup();
     }
     catch {
       showError();
