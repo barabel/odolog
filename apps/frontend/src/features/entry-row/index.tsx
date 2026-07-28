@@ -1,2 +1,3 @@
 export { EntryRow } from './ui/entry-row';
-export type { TEntryRow } from './types';
+export { EntryRowActions } from './ui/entry-row-actions';
+export type { TEntryRow, TEntryRowAction, TEntryRowActions } from './types';

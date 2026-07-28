@@ -12,6 +12,9 @@
       "odometer": "км",
       "liters": "л",
       "currency": "₽"
+    },
+    "action": {
+      "delete": "Удалить"
     }
   },
   "list": {

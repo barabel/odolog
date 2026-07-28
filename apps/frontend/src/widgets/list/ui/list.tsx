@@ -1,13 +1,16 @@
 import cx from 'classix';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TList } from '../types';
+import type { TEntryRowAction } from '@/features/entry-row';
 import { FabButton, type TFabButton } from '@/shared/ui/fab-button';
 import { IconsArray } from '@/shared/enums/icons';
 import { ListStub } from './stub/stub';
 import { FAB_ITEM_VALUE } from '../const';
 import { usePopups } from '@/shared/lib/popups';
 import { formatFullMoment } from '@/shared/lib/date';
-import { EntryRow } from '@/features/entry-row';
+import { EntryRow, EntryRowActions } from '@/features/entry-row';
+import { deleteEntry } from '@/entities/entry';
 
 type TGetEntryTextParams = {
   t: (string: string) => string;
@@ -37,6 +40,8 @@ export const List: FCClass<TList> = ({
   const { t } = useTranslation();
   const { openPopup } = usePopups();
 
+  const [openedEntryId, setOpenedEntryId] = useState<string | null>(null);
+
   const noEntries = !entries?.length;
 
   const handleFabItemClick = (itemValue: TFabButton['items'][0]['value']) => {
@@ -48,6 +53,15 @@ export const List: FCClass<TList> = ({
     if (itemValue === FAB_ITEM_VALUE.FUEL) {
       openPopup('fuel', { vehicleId });
     }
+  };
+
+  const handleEntryOpenChange = (entryId: string, isOpen: boolean) => {
+    setOpenedEntryId(isOpen ? entryId : null);
+  };
+
+  const handleEntryDelete = (entryId: string) => {
+    setOpenedEntryId(null);
+    deleteEntry(entryId);
   };
 
   return (
@@ -88,11 +102,27 @@ export const List: FCClass<TList> = ({
           {entries?.map((entry) => {
             const { id } = entry;
 
+            const actions: TEntryRowAction[] = [
+              {
+                value: 'delete',
+                title: t('entry.action.delete'),
+                icon: IconsArray.trash,
+                variant: 'red',
+                onClick: () => handleEntryDelete(id),
+              },
+            ];
+
             return (
-              <EntryRow
+              <EntryRowActions
                 key={id}
-                entry={entry}
-              />
+                actions={actions}
+                isOpen={openedEntryId === id}
+                onOpenChange={isOpen => handleEntryOpenChange(id, isOpen)}
+              >
+                <EntryRow
+                  entry={entry}
+                />
+              </EntryRowActions>
             );
           })}
         </div>
