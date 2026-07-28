@@ -7,6 +7,13 @@
   "db": {
     "defaultName": "Мой автомобиль"
   },
+  "entry": {
+    "unit": {
+      "odometer": "км",
+      "liters": "л",
+      "currency": "₽"
+    }
+  },
   "list": {
     "entry": {
       "none": "Записей пока нет",

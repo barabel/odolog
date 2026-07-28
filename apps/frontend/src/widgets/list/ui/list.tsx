@@ -7,6 +7,7 @@ import { ListStub } from './stub/stub';
 import { FAB_ITEM_VALUE } from '../const';
 import { usePopups } from '@/shared/lib/popups';
 import { formatFullMoment } from '@/shared/lib/date';
+import { EntryRow } from '@/features/entry-row';
 
 type TGetEntryTextParams = {
   t: (string: string) => string;
@@ -80,56 +81,18 @@ export const List: FCClass<TList> = ({
         />
       )}
 
-      {/* TODO: временный вывод записей, до вёрстки списка */}
       {!noEntries && (
         <div
           className="flex flex-col gap-8"
         >
           {entries?.map((entry) => {
-            const {
-              id,
-              type,
-              measuredAt,
-              odometer,
-            } = entry;
+            const { id } = entry;
 
             return (
-              <div
+              <EntryRow
                 key={id}
-                className="flex justify-between gap-8 rounded-8 bg-gray-100 p-12 t2"
-              >
-                <div
-                  className="flex flex-col"
-                >
-                  <span>
-                    {type}
-                  </span>
-
-                  <span
-                    className="text-black-200"
-                  >
-                    {formatFullMoment(new Date(measuredAt))}
-                  </span>
-                </div>
-
-                <div
-                  className="flex flex-col text-right"
-                >
-                  <span>
-                    {odometer}
-                  </span>
-
-                  {entry.type === 'fuel' && (
-                    <span
-                      className="text-black-200"
-                    >
-                      {entry.liters}
-                      {' л / '}
-                      {entry.totalCost}
-                    </span>
-                  )}
-                </div>
-              </div>
+                entry={entry}
+              />
             );
           })}
         </div>

@@ -39,7 +39,7 @@ src/
   app/        # providers, routing, global styles, layouts
   pages/      # list, analytics, settings
   widgets/    # composite blocks (tabbar, list)
-  features/   # add-odometer-entry, add-fuel-entry, sync (planned)
+  features/   # entry-row (list row markup); sync (planned)
   entities/   # vehicle (active-vehicle store); entry (planned)
   shared/
     lib/      # db/ (Dexie/IndexedDB), id.ts (nanoid), popups/ (facade), date/ (formatting)
@@ -98,10 +98,10 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 - Popup mechanism (`popups-engine`): done — own bottom-sheet mechanism removed entirely
 - FAB speed-dial + empty-state stub: done
 - Date/time picker (calendar + clock face, ADR 0004): done — `shared/lib/date`, `shared/ui/calendar`, `shared/ui/time-field`, `widgets/popups/date-time-picker`; the `react-mobile-picker` wheel is gone
-- Entry list (`widgets/list`): header + stub + FAB done; entries themselves render as a temporary unstyled, unsorted dump — the real list markup is not implemented, header's "last entry" text is a `getEntryText` stub
+- Entry list (`widgets/list`): done — header shows the freshest entry's date, soft-deleted entries are filtered out in the page query, timeline sorted by `sortEntries` (`measuredAt` desc, `createdAt` tie-break); rows render via `features/entry-row` (type icon in blue/green, odometer-first values with muted units, date under them). Row tap does nothing — editing is not implemented
 - Message popup (`widgets/popups/message` + `useSuccessPopup` / `useErrorPopup`): done
 - Forms: both popups (odometer, fuel) are complete — date/time, validation on `react-hook-form` (`mode: 'onChange'`), write to Dexie via `entities/entry` (`createOdometerEntry` / `createFuelEntry`), success/error message popup. Fuel also computes price per liter (`shared/lib/number` over `Intl.NumberFormat`)
-- Not started: odometer delta, entry deletion, list markup
+- Not started: odometer delta, entry deletion, entry editing
 
 Phase tracking and full UI spec live in `docs/plan.md`. Architectural decisions in `docs/adr/`.
 
