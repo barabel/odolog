@@ -18,15 +18,13 @@ const getEntryText = (params: TGetEntryTextParams) => {
     entries,
   } = params;
 
-  const noEntries = !entries?.length;
+  const lastEntry = entries?.[0];
 
-  if (noEntries) {
+  if (!lastEntry) {
     return t('list.entry.none');
   };
 
-  // TODO: сделать когда отрефакторю идею
-
-  return '';
+  return `${t('list.entry.last')} ${formatFullMoment(new Date(lastEntry.measuredAt))}`;
 };
 
 export const List: FCClass<TList> = ({
