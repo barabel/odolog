@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { DateTimeInput } from '@/shared/ui/date-time-input';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
@@ -21,7 +21,6 @@ export const PopupFuel: FCPopup<TPopupFuel> = ({
   const {
     control,
     handleSubmit,
-    watch,
     formState: {
       isValid,
       isSubmitting,
@@ -36,8 +35,10 @@ export const PopupFuel: FCPopup<TPopupFuel> = ({
     },
   });
 
-  const liters = watch('liters');
-  const totalCost = watch('totalCost');
+  const [liters, totalCost] = useWatch({
+    control,
+    name: ['liters', 'totalCost'],
+  });
 
   const parsedLiters = parseDecimal(liters);
   const parsedCost = parseDecimal(totalCost);

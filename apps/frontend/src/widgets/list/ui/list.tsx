@@ -54,7 +54,7 @@ export const List: FCClass<TList> = ({
   return (
     <div
       className={cx(
-        'flex flex-col p-16',
+        'relative flex flex-col p-16',
         className,
       )}
     >
@@ -138,7 +138,7 @@ export const List: FCClass<TList> = ({
       )}
 
       <FabButton
-        className="mt-auto"
+        className="absolute bottom-20 right-20"
         items={[
           {
             title: t('list.fab.odometer'),
