@@ -98,9 +98,10 @@ Import direction: `pages` → `widgets` → `features` → `entities` → `share
 - Popup mechanism (`popups-engine`): done — own bottom-sheet mechanism removed entirely
 - FAB speed-dial + empty-state stub: done
 - Date/time picker (calendar + clock face, ADR 0004): done — `shared/lib/date`, `shared/ui/calendar`, `shared/ui/time-field`, `widgets/popups/date-time-picker`; the `react-mobile-picker` wheel is gone
-- Entry list (`widgets/list`): renders header + stub + FAB only — the list of entries itself is not implemented
-- Forms: odometer popup has a working date/time field but `onSubmit` is a stub (nothing is written to Dexie); fuel popup is a title only
-- Not started: odometer delta, entry deletion, fuel form
+- Entry list (`widgets/list`): header + stub + FAB done; entries themselves render as a temporary unstyled, unsorted dump — the real list markup is not implemented, header's "last entry" text is a `getEntryText` stub
+- Message popup (`widgets/popups/message` + `useSuccessPopup` / `useErrorPopup`): done
+- Forms: both popups (odometer, fuel) are complete — date/time, validation on `react-hook-form` (`mode: 'onChange'`), write to Dexie via `entities/entry` (`createOdometerEntry` / `createFuelEntry`), success/error message popup. Fuel also computes price per liter (`shared/lib/number` over `Intl.NumberFormat`)
+- Not started: odometer delta, entry deletion, list markup
 
 Phase tracking and full UI spec live in `docs/plan.md`. Architectural decisions in `docs/adr/`.
 
