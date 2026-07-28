@@ -1,3 +1,4 @@
+import { sortEntries } from '@/entities/entry';
 import { db } from '@/shared/lib/db';
 import { List } from '@/widgets/list';
 import cx from 'classix';
@@ -17,15 +18,20 @@ export const ListPage: FCClass = ({
     return db.vehicles.get(vehicleId);
   }, [vehicleId]);
 
-  const entries = useLiveQuery(() => {
+  const entries = useLiveQuery(async () => {
     if (!vehicleId) {
       return [];
     }
 
-    return db.entries
+    const vehicleEntries = await db.entries
       .where('vehicleId')
       .equals(vehicleId)
+      .filter(({ deletedAt }) => {
+        return deletedAt === null;
+      })
       .toArray();
+
+    return sortEntries(vehicleEntries);
   }, [vehicleId]);
 
   return (

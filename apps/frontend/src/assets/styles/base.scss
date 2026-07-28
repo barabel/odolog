@@ -16,6 +16,9 @@ html {
   --color-green-100: #E9F6EE;
   --color-green-200: #23B24C;
 
+  --color-red-100: #FDECEC;
+  --color-red-200: #E23B3B;
+
   --color-gray-100: #F2F3F5;
 }
 
@@ -24,7 +27,7 @@ body {
   flex-direction: column;
   width: 100%;
   margin: 0;
-  min-height: 100vh;
+  min-height: 100svh;
   line-height: 100%;
   font-family: var(--font-onest), serif;
   font-weight: 400;
@@ -32,7 +35,7 @@ body {
 }
 
 main {
-  min-height: 100vh;
+  min-height: 100svh;
   max-width: 375px;
   margin: 0 auto;
 }

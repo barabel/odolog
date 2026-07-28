@@ -6,4 +6,5 @@ export enum IconsArray {
   list = 'list',
   odometer = 'odometer',
   settings = 'settings',
+  trash = 'trash',
 }

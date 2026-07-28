@@ -1,12 +1,16 @@
 import cx from 'classix';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { TList } from '../types';
+import type { TEntryRowAction } from '@/features/entry-row';
 import { FabButton, type TFabButton } from '@/shared/ui/fab-button';
 import { IconsArray } from '@/shared/enums/icons';
 import { ListStub } from './stub/stub';
 import { FAB_ITEM_VALUE } from '../const';
 import { usePopups } from '@/shared/lib/popups';
 import { formatFullMoment } from '@/shared/lib/date';
+import { EntryRow, EntryRowActions } from '@/features/entry-row';
+import { deleteEntry } from '@/entities/entry';
 
 type TGetEntryTextParams = {
   t: (string: string) => string;
@@ -18,15 +22,13 @@ const getEntryText = (params: TGetEntryTextParams) => {
     entries,
   } = params;
 
-  const noEntries = !entries?.length;
+  const lastEntry = entries?.[0];
 
-  if (noEntries) {
+  if (!lastEntry) {
     return t('list.entry.none');
   };
 
-  // TODO: сделать когда отрефакторю идею
-
-  return '';
+  return `${t('list.entry.last')} ${formatFullMoment(new Date(lastEntry.measuredAt))}`;
 };
 
 export const List: FCClass<TList> = ({
@@ -38,6 +40,8 @@ export const List: FCClass<TList> = ({
   const { t } = useTranslation();
   const { openPopup } = usePopups();
 
+  const [openedEntryId, setOpenedEntryId] = useState<string | null>(null);
+
   const noEntries = !entries?.length;
 
   const handleFabItemClick = (itemValue: TFabButton['items'][0]['value']) => {
@@ -47,14 +51,23 @@ export const List: FCClass<TList> = ({
     }
 
     if (itemValue === FAB_ITEM_VALUE.FUEL) {
-      openPopup('fuel');
+      openPopup('fuel', { vehicleId });
     }
+  };
+
+  const handleEntryOpenChange = (entryId: string, isOpen: boolean) => {
+    setOpenedEntryId(isOpen ? entryId : null);
+  };
+
+  const handleEntryDelete = (entryId: string) => {
+    setOpenedEntryId(null);
+    deleteEntry(entryId);
   };
 
   return (
     <div
       className={cx(
-        'flex flex-col p-16',
+        'relative flex flex-col p-16',
         className,
       )}
     >
@@ -82,63 +95,41 @@ export const List: FCClass<TList> = ({
         />
       )}
 
-      {/* TODO: временный вывод записей, до вёрстки списка */}
       {!noEntries && (
         <div
           className="flex flex-col gap-8"
         >
           {entries?.map((entry) => {
-            const {
-              id,
-              type,
-              measuredAt,
-              odometer,
-            } = entry;
+            const { id } = entry;
+
+            const actions: TEntryRowAction[] = [
+              {
+                value: 'delete',
+                title: t('entry.action.delete'),
+                icon: IconsArray.trash,
+                variant: 'red',
+                onClick: () => handleEntryDelete(id),
+              },
+            ];
 
             return (
-              <div
+              <EntryRowActions
                 key={id}
-                className="flex justify-between gap-8 rounded-8 bg-gray-100 p-12 t2"
+                actions={actions}
+                isOpen={openedEntryId === id}
+                onOpenChange={isOpen => handleEntryOpenChange(id, isOpen)}
               >
-                <div
-                  className="flex flex-col"
-                >
-                  <span>
-                    {type}
-                  </span>
-
-                  <span
-                    className="text-black-200"
-                  >
-                    {formatFullMoment(new Date(measuredAt))}
-                  </span>
-                </div>
-
-                <div
-                  className="flex flex-col text-right"
-                >
-                  <span>
-                    {odometer}
-                  </span>
-
-                  {entry.type === 'fuel' && (
-                    <span
-                      className="text-black-200"
-                    >
-                      {entry.liters}
-                      {' л / '}
-                      {entry.totalCost}
-                    </span>
-                  )}
-                </div>
-              </div>
+                <EntryRow
+                  entry={entry}
+                />
+              </EntryRowActions>
             );
           })}
         </div>
       )}
 
       <FabButton
-        className="mt-auto"
+        className="absolute bottom-20 right-20"
         items={[
           {
             title: t('list.fab.odometer'),

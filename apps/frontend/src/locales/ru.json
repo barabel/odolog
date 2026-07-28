@@ -7,6 +7,16 @@
   "db": {
     "defaultName": "Мой автомобиль"
   },
+  "entry": {
+    "unit": {
+      "odometer": "км",
+      "liters": "л",
+      "currency": "₽"
+    },
+    "action": {
+      "delete": "Удалить"
+    }
+  },
   "list": {
     "entry": {
       "none": "Записей пока нет",
@@ -38,7 +48,29 @@
       }
     },
     "fuel": {
-      "title": "Заправка"
+      "title": "Заправка",
+      "dateTimeInput": {
+        "label": "Дата"
+      },
+      "odometer": {
+        "label": "Одометр",
+        "unit": "км"
+      },
+      "liters": {
+        "label": "Литры",
+        "unit": "л"
+      },
+      "totalCost": {
+        "label": "Общая стоимость",
+        "unit": "₽"
+      },
+      "pricePerLiter": {
+        "value": "Цена за литр: {{value}} ₽",
+        "empty": "Цена за литр: —"
+      },
+      "submit": {
+        "title": "Сохранить"
+      }
     },
     "dateTimePicker": {
       "time": {
@@ -52,9 +84,6 @@
     },
     "message": {
       "ok": "ОК",
-      "success": {
-        "title": "Запись сохранена"
-      },
       "error": {
         "title": "Не удалось сохранить",
         "description": "Попробуйте ещё раз"

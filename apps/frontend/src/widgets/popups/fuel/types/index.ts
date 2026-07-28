@@ -1,1 +1,10 @@
-export type TPopupFuel = undefined;
+export type TPopupFuel = {
+  vehicleId: string;
+};
+
+export type TFuelForm = {
+  date: Date;
+  odometer: string;
+  liters: string;
+  totalCost: string;
+};
