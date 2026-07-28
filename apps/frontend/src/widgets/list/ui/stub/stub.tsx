@@ -62,7 +62,7 @@ export const ListStub: FCClass<TListStub> = ({
         <Button
           className="grow-1 basis-1/2"
           variant="white"
-          onClick={() => openPopup('fuel')}
+          onClick={() => openPopup('fuel', { vehicleId })}
         >
           {t('list.stub.fuelButton')}
         </Button>

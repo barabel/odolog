@@ -47,7 +47,7 @@ export const List: FCClass<TList> = ({
     }
 
     if (itemValue === FAB_ITEM_VALUE.FUEL) {
-      openPopup('fuel');
+      openPopup('fuel', { vehicleId });
     }
   };
 
