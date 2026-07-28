@@ -65,7 +65,7 @@ export const FabButton: FCClass<TFabButton> = ({
           {isOpen && (
             <motion.div
               className={cx(
-                'flex flex-col items-end gap-12',
+                'flex flex-col items-end gap-12 bg-white-100',
               )}
               variants={containerVariants}
               initial="hidden"

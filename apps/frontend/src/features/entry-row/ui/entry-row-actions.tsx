@@ -94,7 +94,7 @@ export const EntryRowActions: FCClass<TEntryRowActions> = ({
               onClick={onClick}
             >
               <Icon
-                className="w-20 min-w-20 h-20"
+                className="w-20 min-w-20 h-20 pointer-events-none"
                 icon={icon}
               />
 
